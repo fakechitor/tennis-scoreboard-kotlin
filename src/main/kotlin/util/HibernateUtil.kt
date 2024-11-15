@@ -1,3 +1,5 @@
+package util
+
 import model.Match
 import model.Player
 import org.hibernate.SessionFactory
