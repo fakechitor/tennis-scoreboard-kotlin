@@ -15,4 +15,10 @@ class Player{
     constructor(name : String) : this() {
         this.name = name
     }
+
+    override fun toString(): String {
+        return "Player(id=$id, name='$name')"
+    }
+
+
 }
