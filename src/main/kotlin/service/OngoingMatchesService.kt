@@ -14,10 +14,5 @@ object OngoingMatchesService {
         map[id] = match
     }
 
-    fun printData() {
-        for (uuid in map.keys()) {
-            println(map[uuid].toString())
-        }
-    }
 
 }

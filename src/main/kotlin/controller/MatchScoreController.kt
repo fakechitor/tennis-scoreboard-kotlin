@@ -6,33 +6,36 @@ import constant.CurrentScoreKeys.KEY_PLAYER_1_SETS
 import constant.CurrentScoreKeys.KEY_PLAYER_2_GAMES
 import constant.CurrentScoreKeys.KEY_PLAYER_2_POINTS
 import constant.CurrentScoreKeys.KEY_PLAYER_2_SETS
+import exception.GameFinishedException
 import jakarta.servlet.annotation.WebServlet
 import jakarta.servlet.http.HttpServlet
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import service.MatchScoreCalculationService
 import service.OngoingMatchesService
-import service.PlayerService
 
 private const val PATH_TO_JSP = "/match-score.jsp"
 
 @WebServlet(urlPatterns = ["/match-score/*"])
 class MatchScoreController : HttpServlet() {
-    private val playerService = PlayerService()
 
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
         val uuid = req.pathInfo.trim('/')
         addRequestAttributes(uuid, req)
         req.getRequestDispatcher(PATH_TO_JSP).forward(req, resp)
-        println(uuid)
-        OngoingMatchesService.printData()
     }
 
     override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
-        val uuid = req.pathInfo.trim('/')
-        val player = req.getParameter("player")
-        // TODO move addScore(uuid, player) to service
-        addRequestAttributes(uuid, req)
-        req.getRequestDispatcher(PATH_TO_JSP).forward(req, resp)
+        try {
+            val uuid = req.pathInfo.trim('/')
+            val player = req.getParameter("player")
+            MatchScoreCalculationService().testAddScore(uuid, player)
+            addRequestAttributes(uuid, req)
+            req.getRequestDispatcher(PATH_TO_JSP).forward(req, resp)
+        }
+        catch (e : GameFinishedException){
+            //TODO make logic for game ending
+        }
     }
 
     private fun getNamesByUUID(uuid: String): List<String> {
