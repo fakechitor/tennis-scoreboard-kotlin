@@ -9,7 +9,9 @@ class PlayerService {
     private val playerRepository = PlayerRepository()
     private var mapper = ModelMapper()
 
-
+    fun getById(id: Int) : Player? {
+        return playerRepository.getById(id)
+    }
     fun getByName(name: String) : Player? {
         return playerRepository.getByName(name)
     }
