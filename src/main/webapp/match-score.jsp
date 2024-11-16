@@ -26,7 +26,7 @@
         <td>${setsPlayer1}</td>
         <td>${gamesPlayer1}</td>
         <td>${pointsPlayer1}</td>
-        <td><form action="http://localhost:8080/ROOT_war_exploded/match-score/${uuid}" method="POST">
+        <td><form action="${pageContext.request.contextPath}/match-score/${uuid}" method="POST">
             <input type="hidden" name="player" value="player1">
             <button type="submit">Добавить очко</button>
         </form></td>
@@ -36,7 +36,7 @@
         <td>${setsPlayer2}</td>
         <td>${gamesPlayer2}</td>
         <td>${pointsPlayer2}</td>
-        <td><form action="http://localhost:8080/ROOT_war_exploded/match-score/${uuid}" method="POST">
+        <td><form action="${pageContext.request.contextPath}/match-score/${uuid}" method="POST">
             <input type="hidden" name="player" value="player2">
             <button type="submit">Добавить очко</button>
         </form></td>
