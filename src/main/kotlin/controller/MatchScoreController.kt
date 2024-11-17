@@ -18,6 +18,7 @@ private const val PATH_TO_JSP = "/match-score.jsp"
 
 @WebServlet(urlPatterns = ["/match-score/*"])
 class MatchScoreController : HttpServlet() {
+    val calculationService = MatchScoreCalculationService()
 
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
         val uuid = req.pathInfo.trim('/')
@@ -29,7 +30,7 @@ class MatchScoreController : HttpServlet() {
         try {
             val uuid = req.pathInfo.trim('/')
             val player = req.getParameter("player")
-            MatchScoreCalculationService().testAddScore(uuid, player)
+            calculationService.updateMatchState(uuid, player)
             addRequestAttributes(uuid, req)
             req.getRequestDispatcher(PATH_TO_JSP).forward(req, resp)
         }
@@ -55,12 +56,12 @@ class MatchScoreController : HttpServlet() {
         req.setAttribute("uuid", uuid)
         val currentMatch = OngoingMatchesService.getMatch(uuid)
         if (currentMatch != null) {
-            req.setAttribute(KEY_PLAYER_1_POINTS, currentMatch.pointsPlayer1)
-            req.setAttribute(KEY_PLAYER_1_GAMES, currentMatch.gamesPlayer1)
-            req.setAttribute(KEY_PLAYER_1_SETS, currentMatch.setsPlayer1)
-            req.setAttribute(KEY_PLAYER_2_POINTS, currentMatch.pointsPlayer2)
-            req.setAttribute(KEY_PLAYER_2_GAMES, currentMatch.gamesPlayer2)
-            req.setAttribute(KEY_PLAYER_2_SETS, currentMatch.setsPlayer2)
+            req.setAttribute(KEY_PLAYER_1_POINTS, currentMatch.statsPlayer1["point"])
+            req.setAttribute(KEY_PLAYER_1_GAMES, currentMatch.statsPlayer1["game"])
+            req.setAttribute(KEY_PLAYER_1_SETS, currentMatch.statsPlayer1["set"])
+            req.setAttribute(KEY_PLAYER_2_POINTS, currentMatch.statsPlayer2["point"])
+            req.setAttribute(KEY_PLAYER_2_GAMES, currentMatch.statsPlayer2["game"])
+            req.setAttribute(KEY_PLAYER_2_SETS, currentMatch.statsPlayer2["set"])
         }
     }
 }
