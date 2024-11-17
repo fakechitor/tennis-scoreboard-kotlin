@@ -1,11 +1,10 @@
 package repository
 
-import dto.PlayerDto
 import model.Player
 import org.hibernate.Session
 import util.HibernateUtil
 
-class PlayerRepository : JpaRepository<Player, PlayerDto> {
+class PlayerRepository : JpaRepository<Player> {
     private val sessionFactory = HibernateUtil.sessionFactory
 
     override fun getById(id : Int): Player? {
