@@ -12,7 +12,7 @@ class MatchScoreCalculationService {
     private var tiebreakFlag : Boolean = false
 
     fun updateMatchState(uuid: String, player: String) {
-        val matchScore = OngoingMatchesService.getMatch(uuid) ?: throw IllegalArgumentException("Invalid UUID")
+        val matchScore = OngoingMatchesService.getMatch(uuid)
         checkGameFinished(matchScore)
         if (!tiebreakFlag) {
             updateScoreStats(matchScore, player)
