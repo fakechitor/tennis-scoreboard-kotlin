@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet
 import jakarta.servlet.http.HttpServlet
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import service.FinishedMatchesPersistenceService
 import service.MatchScoreCalculationService
 import service.OngoingMatchesService
 
@@ -18,7 +19,8 @@ private const val PATH_TO_JSP = "/match-score.jsp"
 
 @WebServlet(urlPatterns = ["/match-score/*"])
 class MatchScoreController : HttpServlet() {
-    val calculationService = MatchScoreCalculationService()
+    private val calculationService = MatchScoreCalculationService()
+    private val finishedMatches = FinishedMatchesPersistenceService()
 
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
         val uuid = req.pathInfo.trim('/')
@@ -27,26 +29,28 @@ class MatchScoreController : HttpServlet() {
     }
 
     override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
+        val uuid = req.pathInfo.trim('/')
         try {
-            val uuid = req.pathInfo.trim('/')
             val player = req.getParameter("player")
             calculationService.updateMatchState(uuid, player)
             addRequestAttributes(uuid, req)
             req.getRequestDispatcher(PATH_TO_JSP).forward(req, resp)
         }
         catch (e : GameFinishedException){
-            //TODO make logic for game ending
+            val match = OngoingMatchesService.getMatch(uuid).match
+            finishedMatches.save(match)
+            OngoingMatchesService.deleteMatch(uuid)
+        }
+        catch (e: IllegalArgumentException){
+
         }
     }
 
     private fun getNamesByUUID(uuid: String): List<String> {
         val match = OngoingMatchesService.getMatch(uuid)
-        if (match!=null){
-            val firstPlayerName = match.namePlayer1
-            val secondPlayerName = match.namePlayer2
-            return listOf(firstPlayerName, secondPlayerName)
-        }
-        return listOf()
+        val firstPlayerName = match.namePlayer1
+        val secondPlayerName = match.namePlayer2
+        return listOf(firstPlayerName, secondPlayerName)
     }
 
     private fun addRequestAttributes(uuid: String, req: HttpServletRequest) {
@@ -55,13 +59,11 @@ class MatchScoreController : HttpServlet() {
         req.setAttribute("secondPlayerName", playersName[1])
         req.setAttribute("uuid", uuid)
         val currentMatch = OngoingMatchesService.getMatch(uuid)
-        if (currentMatch != null) {
-            req.setAttribute(KEY_PLAYER_1_POINTS, currentMatch.statsPlayer1["point"])
-            req.setAttribute(KEY_PLAYER_1_GAMES, currentMatch.statsPlayer1["game"])
-            req.setAttribute(KEY_PLAYER_1_SETS, currentMatch.statsPlayer1["set"])
-            req.setAttribute(KEY_PLAYER_2_POINTS, currentMatch.statsPlayer2["point"])
-            req.setAttribute(KEY_PLAYER_2_GAMES, currentMatch.statsPlayer2["game"])
-            req.setAttribute(KEY_PLAYER_2_SETS, currentMatch.statsPlayer2["set"])
-        }
+        req.setAttribute(KEY_PLAYER_1_POINTS, currentMatch.statsPlayer1["point"])
+        req.setAttribute(KEY_PLAYER_1_GAMES, currentMatch.statsPlayer1["game"])
+        req.setAttribute(KEY_PLAYER_1_SETS, currentMatch.statsPlayer1["set"])
+        req.setAttribute(KEY_PLAYER_2_POINTS, currentMatch.statsPlayer2["point"])
+        req.setAttribute(KEY_PLAYER_2_GAMES, currentMatch.statsPlayer2["game"])
+        req.setAttribute(KEY_PLAYER_2_SETS, currentMatch.statsPlayer2["set"])
     }
 }

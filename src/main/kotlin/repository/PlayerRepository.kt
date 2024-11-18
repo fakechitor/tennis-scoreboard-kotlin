@@ -30,29 +30,6 @@ class PlayerRepository : JpaRepository<Player> {
         return player
     }
 
-    override fun getByName(name: String): Player? {
-        var session: Session? = null
-        var player: Player? = null
-
-        try {
-            session = sessionFactory.openSession()
-            val hql = "FROM Player p WHERE p.name = :name"
-            val query = session.createQuery(hql, Player::class.java)
-            query.setParameter("name", name)
-            val result = query.resultList
-            if (result.size > 0 ) {
-                player = result[0]
-            }
-        } catch (e: Exception) {
-            session?.transaction?.rollback()
-            e.printStackTrace()
-        }
-        finally {
-            session?.close()
-        }
-        return player
-    }
-
     override fun getAll(): List<Player> {
         var session : Session? = null
         var players : List<Player> = listOf()
@@ -85,6 +62,29 @@ class PlayerRepository : JpaRepository<Player> {
         finally {
             session?.close()
         }
+    }
+
+    fun getByName(name: String): Player? {
+        var session: Session? = null
+        var player: Player? = null
+
+        try {
+            session = sessionFactory.openSession()
+            val hql = "FROM Player p WHERE p.name = :name"
+            val query = session.createQuery(hql, Player::class.java)
+            query.setParameter("name", name)
+            val result = query.resultList
+            if (result.size > 0 ) {
+                player = result[0]
+            }
+        } catch (e: Exception) {
+            session?.transaction?.rollback()
+            e.printStackTrace()
+        }
+        finally {
+            session?.close()
+        }
+        return player
     }
 
 
