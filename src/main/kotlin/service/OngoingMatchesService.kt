@@ -1,6 +1,5 @@
 package service
 
-import exception.GameFinishedException
 import model.MatchScoreModel
 import java.util.concurrent.ConcurrentHashMap
 
