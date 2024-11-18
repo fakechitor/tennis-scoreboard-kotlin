@@ -1,26 +1,21 @@
 package repository
 
-import dto.PlayerDto
 import model.Player
 import org.hibernate.Session
 import util.HibernateUtil
 
-class PlayerRepository : JpaRepository<Player, PlayerDto> {
+class PlayerRepository : JpaRepository<Player> {
     private val sessionFactory = HibernateUtil.sessionFactory
 
-    override fun getById(): Player {
-        TODO()
-    }
-
-    override fun getByName(name: String): Player? {
+    override fun getById(id : Int): Player? {
         var session: Session? = null
         var player: Player? = null
 
         try {
             session = sessionFactory.openSession()
-            val hql = "FROM Player p WHERE p.name = :name"
+            val hql = "FROM Player p WHERE p.id = :id"
             val query = session.createQuery(hql, Player::class.java)
-            query.setParameter("name", name)
+            query.setParameter("id", id)
             val result = query.resultList
             if (result.size > 0 ) {
                 player = result[0]
@@ -67,6 +62,29 @@ class PlayerRepository : JpaRepository<Player, PlayerDto> {
         finally {
             session?.close()
         }
+    }
+
+    fun getByName(name: String): Player? {
+        var session: Session? = null
+        var player: Player? = null
+
+        try {
+            session = sessionFactory.openSession()
+            val hql = "FROM Player p WHERE p.name = :name"
+            val query = session.createQuery(hql, Player::class.java)
+            query.setParameter("name", name)
+            val result = query.resultList
+            if (result.size > 0 ) {
+                player = result[0]
+            }
+        } catch (e: Exception) {
+            session?.transaction?.rollback()
+            e.printStackTrace()
+        }
+        finally {
+            session?.close()
+        }
+        return player
     }
 
 

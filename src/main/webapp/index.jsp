@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <link rel="icon" href="flavicone.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Document</title>
+    <title>Tennis scoreboard</title>
 </head>
 <body>
 <a href="${pageContext.request.contextPath}/new-match">Новый матч</a>

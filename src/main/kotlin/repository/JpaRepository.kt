@@ -1,8 +1,7 @@
 package repository
 
-interface JpaRepository<T, K> {
-    fun getById(): T
-    fun getByName(name: String): T?
+interface JpaRepository<T> {
+    fun getById(id: Int): T?
     fun getAll(): List<T>?
     fun save(entity: T) : T
 
