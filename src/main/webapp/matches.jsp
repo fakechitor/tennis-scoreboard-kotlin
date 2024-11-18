@@ -8,6 +8,6 @@
     <title>matches</title>
 </head>
 <body>
-    <b>Matches table</b>
+    <b>${matches}</b>
 </body>
 </html>
