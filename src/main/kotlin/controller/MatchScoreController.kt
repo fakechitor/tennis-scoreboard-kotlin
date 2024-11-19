@@ -32,7 +32,8 @@ class MatchScoreController : HttpServlet() {
         val uuid = req.pathInfo.trim('/')
         try {
             val player = req.getParameter("player")
-            calculationService.updateMatchState(uuid, player)
+            val matchScore = OngoingMatchesService.getMatch(uuid)
+            calculationService.updateMatchState(matchScore, player)
             addRequestAttributes(uuid, req)
             req.getRequestDispatcher(PATH_TO_JSP).forward(req, resp)
         }
@@ -40,6 +41,7 @@ class MatchScoreController : HttpServlet() {
             val match = OngoingMatchesService.getMatch(uuid).match
             finishedMatches.save(match)
             OngoingMatchesService.deleteMatch(uuid)
+            req.getRequestDispatcher("/finished-match.jsp").forward(req, resp)
         }
         catch (e: IllegalArgumentException){
 
