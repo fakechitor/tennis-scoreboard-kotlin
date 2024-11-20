@@ -56,7 +56,7 @@ class MatchScoreController : HttpServlet() {
         val matchScore = OngoingMatchesService.getMatch(uuid)
         val playersNames = matchScoreView.getNamesList(matchScore)
         req.setAttribute("firstPlayer", playersNames[0])
-        req.setAttribute("secondPlayer", playersNames[0])
+        req.setAttribute("secondPlayer", playersNames[1])
         val scoreData = matchScoreView.getMatchScoreDataForView(matchScore, state)
         req.setAttribute("scoreData", scoreData)
         val columnNames = matchScoreView.getColumnNames(state)

@@ -46,14 +46,16 @@ class MatchScoreView {
 
     private fun prepareMatchScoreFinished(match: MatchScoreModel) : Map<String, Any> {
         val matchData = mutableMapOf<String, Any>()
-        matchData[CurrentScoreKeys.PLAYER_1_POINTS] = match.player1Sets[0]
-        matchData[CurrentScoreKeys.PLAYER_1_GAMES] = match.player1Sets[1]
-        matchData[CurrentScoreKeys.PLAYER_1_SETS] = match.player1Sets[2]
 
-        matchData[CurrentScoreKeys.PLAYER_2_POINTS] = match.player2Sets[0]
-        matchData[CurrentScoreKeys.PLAYER_2_GAMES] = match.player2Sets[1]
-        matchData[CurrentScoreKeys.PLAYER_2_SETS] = match.player2Sets[2]
+        matchData["setsPlayer1"] = match.statsPlayer1["set"] ?: 0
+        matchData["firstSetPlayer1"] = match.player1Sets[0]
+        matchData["secondSetPlayer1"] = match.player1Sets[1]
+        matchData["thirdSetPlayer1"] = match.player1Sets[2]
 
+        matchData["setsPlayer2"] = match.statsPlayer2["set"] ?: 0
+        matchData["firstSetPlayer2"] = match.player2Sets[0]
+        matchData["secondSetPlayer2"] = match.player2Sets[1]
+        matchData["thirdSetPlayer2"] = match.player2Sets[2]
 
         return matchData
     }

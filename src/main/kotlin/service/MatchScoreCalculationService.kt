@@ -57,10 +57,12 @@ class MatchScoreCalculationService {
 
     private fun checkGameFinished(match : MatchScoreModel) {
         if (match.statsPlayer1["set"] == WINNING_SETS_COUNT) {
+            saveSetResults(match)
             match.match.winner = match.match.player1
             throw GameFinishedException()
         }
         else if (match.statsPlayer2["set"] == WINNING_SETS_COUNT) {
+            saveSetResults(match)
             match.match.winner = match.match.player2
             throw GameFinishedException()
         }
