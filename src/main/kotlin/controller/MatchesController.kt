@@ -10,7 +10,7 @@ private const val PATH_TO_JSP = "/matches.jsp"
 
 @WebServlet(urlPatterns = ["/matches"])
 class MatchesController : HttpServlet() {
-    val finishedMatches = FinishedMatchesPersistenceService()
+    private val finishedMatches = FinishedMatchesPersistenceService()
 
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
         req.setAttribute("matches",finishedMatches.getAll())

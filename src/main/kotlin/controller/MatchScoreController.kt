@@ -38,13 +38,14 @@ class MatchScoreController : HttpServlet() {
             req.getRequestDispatcher(PATH_TO_MATCH_SCORE).forward(req, resp)
         }
         catch (e : GameFinishedException){
-            val match = OngoingMatchesService.getMatch(uuid).match
-            finishedMatches.save(match)
+            val matchScore = OngoingMatchesService.getMatch(uuid)
+            finishedMatches.save(matchScore.match)
+            addRequestAttributes(uuid, req, GameState.FINISHED)
             OngoingMatchesService.deleteMatch(uuid)
             req.getRequestDispatcher(PATH_TO_FINISHED).forward(req, resp)
         }
         catch (e: IllegalArgumentException){
-
+            TODO()
         }
     }
 
@@ -56,11 +57,7 @@ class MatchScoreController : HttpServlet() {
         val playersNames = matchScoreView.getNamesList(matchScore)
         req.setAttribute("firstPlayer", playersNames[0])
         req.setAttribute("secondPlayer", playersNames[0])
-        val scoreData = when (state){
-            GameState.NORMAL -> matchScoreView.prepareMatchScoreForView(matchScore)
-            GameState.UNDER_LOWER -> matchScoreView.prepareMatchScoreForView2(matchScore)
-            GameState.TIEBREAK -> matchScoreView.prepareMatchScoreForView2(matchScore)
-        }
+        val scoreData = matchScoreView.getMatchScoreDataForView(matchScore, state)
         req.setAttribute("scoreData", scoreData)
         val columnNames = matchScoreView.getColumnNames(state)
         req.setAttribute("columnNames", columnNames)

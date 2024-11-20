@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="flavicone.ico" type="image/x-icon" />
+    <link rel="icon" href="${pageContext.request.contextPath}/flavicone.ico" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Tennis scoreboard</title>
 </head>
@@ -15,26 +15,26 @@
     <thead>
     <tr>
         <th>Игрок</th>
-        <th>Сет 1</th>
-        <th>Сет 2</th>
-        <th>Сет 3</th>
-        <th>Победитель</th>
+        <th>${columnNames[0]}</th>
+        <th>${columnNames[1]}</th>
+        <th>${columnNames[2]}</th>
+        <
     </tr>
     </thead>
     <tbody>
     <tr>
-        <td>${firstPlayerName}</td>
-        <td>${firstSetPlayer1}</td>
-        <td>${gamesPlayer1}</td>
-        <td>${pointsPlayer1}</td>
-        <td></td>
+        <td>${firstPlayer}</td>
+        <td>${scoreData["setsPlayer2"]}</td>
+        <td>${scoreData["firstSetPlayer2"]}</td>
+        <td>${scoreData["secondSetPlayer2"]}</td>
+        <td>${scoreData["thirdSetPlayer2"]}</td>
     </tr>
     <tr>
-        <td>${secondPlayerName}</td>
-        <td>${setsPlayer2}</td>
-        <td>${gamesPlayer2}</td>
-        <td>${pointsPlayer2}</td>
-        <td></td>
+        <td>${secondPlayer}</td>
+        <td>${scoreData["setsPlayer2"]}</td>
+        <td>${scoreData["firstSetPlayer2"]}</td>
+        <td>${scoreData["secondSetPlayer2"]}</td>
+        <td>${scoreData["thirdSetPlayer2"]}</td>
     </tr>
     </tbody>
 </table>
