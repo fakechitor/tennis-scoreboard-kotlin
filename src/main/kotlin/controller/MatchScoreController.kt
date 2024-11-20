@@ -22,13 +22,13 @@ class MatchScoreController : HttpServlet() {
 
 
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
-        val uuid = req.pathInfo.trim('/')
+        val uuid = req.getParameter("uuid")
         addRequestAttributes(uuid, req, GameState.NORMAL)
         req.getRequestDispatcher(PATH_TO_MATCH_SCORE).forward(req, resp)
     }
 
     override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
-        val uuid = req.pathInfo.trim('/')
+        val uuid = req.getParameter("uuid")
         try {
             val player = req.getParameter("player")
             val matchScore = OngoingMatchesService.getMatch(uuid)

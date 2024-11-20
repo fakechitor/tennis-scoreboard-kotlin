@@ -32,7 +32,7 @@ class NewMatchController : HttpServlet() {
         val uuid = UUID.randomUUID().toString()
         val match = Match(player1.id,player2.id)
         OngoingMatchesService.putMatch(uuid, MatchScoreModel(match, player1.name, player2.name))
-        resp.sendRedirect("${req.contextPath}/match-score/$uuid")
+        resp.sendRedirect("${req.contextPath}/match-score?uuid=$uuid")
     }
 
     private fun findOrCreatePlayer(name: String): Player {

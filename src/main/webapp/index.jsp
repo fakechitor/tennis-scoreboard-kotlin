@@ -12,6 +12,6 @@
 <br>
 <a href="${pageContext.request.contextPath}/match-score">Счет матча</a>
 <br>
-<a href="${pageContext.request.contextPath}/matches">Матчи</a>
+<a href="${pageContext.request.contextPath}/matches?page=1&filter_by_player_name=">Матчи</a>
 </body>
 </html>
