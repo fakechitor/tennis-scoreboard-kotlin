@@ -1,11 +1,6 @@
 package controller
 
-import constant.CurrentScoreKeys.KEY_PLAYER_1_GAMES
-import constant.CurrentScoreKeys.KEY_PLAYER_1_POINTS
-import constant.CurrentScoreKeys.KEY_PLAYER_1_SETS
-import constant.CurrentScoreKeys.KEY_PLAYER_2_GAMES
-import constant.CurrentScoreKeys.KEY_PLAYER_2_POINTS
-import constant.CurrentScoreKeys.KEY_PLAYER_2_SETS
+import constant.GameState
 import exception.GameFinishedException
 import jakarta.servlet.annotation.WebServlet
 import jakarta.servlet.http.HttpServlet
@@ -14,18 +9,22 @@ import jakarta.servlet.http.HttpServletResponse
 import service.FinishedMatchesPersistenceService
 import service.MatchScoreCalculationService
 import service.OngoingMatchesService
+import view.MatchScoreView
 
-private const val PATH_TO_JSP = "/match-score.jsp"
+private const val PATH_TO_MATCH_SCORE = "/match-score.jsp"
+private const val PATH_TO_FINISHED = "/finished-match.jsp"
 
 @WebServlet(urlPatterns = ["/match-score/*"])
 class MatchScoreController : HttpServlet() {
     private val calculationService = MatchScoreCalculationService()
     private val finishedMatches = FinishedMatchesPersistenceService()
+    private val matchScoreView = MatchScoreView()
+
 
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
         val uuid = req.pathInfo.trim('/')
-        addRequestAttributes(uuid, req)
-        req.getRequestDispatcher(PATH_TO_JSP).forward(req, resp)
+        addRequestAttributes(uuid, req, GameState.NORMAL)
+        req.getRequestDispatcher(PATH_TO_MATCH_SCORE).forward(req, resp)
     }
 
     override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
@@ -34,38 +33,36 @@ class MatchScoreController : HttpServlet() {
             val player = req.getParameter("player")
             val matchScore = OngoingMatchesService.getMatch(uuid)
             calculationService.updateMatchState(matchScore, player)
-            addRequestAttributes(uuid, req)
-            req.getRequestDispatcher(PATH_TO_JSP).forward(req, resp)
+            val state  = calculationService.getMatchState()
+            addRequestAttributes(uuid, req, state)
+            req.getRequestDispatcher(PATH_TO_MATCH_SCORE).forward(req, resp)
         }
         catch (e : GameFinishedException){
             val match = OngoingMatchesService.getMatch(uuid).match
             finishedMatches.save(match)
             OngoingMatchesService.deleteMatch(uuid)
-            req.getRequestDispatcher("/finished-match.jsp").forward(req, resp)
+            req.getRequestDispatcher(PATH_TO_FINISHED).forward(req, resp)
         }
         catch (e: IllegalArgumentException){
 
         }
     }
 
-    private fun getNamesByUUID(uuid: String): List<String> {
-        val match = OngoingMatchesService.getMatch(uuid)
-        val firstPlayerName = match.namePlayer1
-        val secondPlayerName = match.namePlayer2
-        return listOf(firstPlayerName, secondPlayerName)
-    }
 
-    private fun addRequestAttributes(uuid: String, req: HttpServletRequest) {
-        val playersName = getNamesByUUID(uuid)
-        req.setAttribute("firstPlayerName", playersName[0])
-        req.setAttribute("secondPlayerName", playersName[1])
+
+    private fun addRequestAttributes(uuid : String, req: HttpServletRequest, state : GameState) {
         req.setAttribute("uuid", uuid)
-        val currentMatch = OngoingMatchesService.getMatch(uuid)
-        req.setAttribute(KEY_PLAYER_1_POINTS, currentMatch.statsPlayer1["point"])
-        req.setAttribute(KEY_PLAYER_1_GAMES, currentMatch.statsPlayer1["game"])
-        req.setAttribute(KEY_PLAYER_1_SETS, currentMatch.statsPlayer1["set"])
-        req.setAttribute(KEY_PLAYER_2_POINTS, currentMatch.statsPlayer2["point"])
-        req.setAttribute(KEY_PLAYER_2_GAMES, currentMatch.statsPlayer2["game"])
-        req.setAttribute(KEY_PLAYER_2_SETS, currentMatch.statsPlayer2["set"])
+        val matchScore = OngoingMatchesService.getMatch(uuid)
+        val playersNames = matchScoreView.getNamesList(matchScore)
+        req.setAttribute("firstPlayer", playersNames[0])
+        req.setAttribute("secondPlayer", playersNames[0])
+        val scoreData = when (state){
+            GameState.NORMAL -> matchScoreView.prepareMatchScoreForView(matchScore)
+            GameState.UNDER_LOWER -> matchScoreView.prepareMatchScoreForView2(matchScore)
+            GameState.TIEBREAK -> matchScoreView.prepareMatchScoreForView2(matchScore)
+        }
+        req.setAttribute("scoreData", scoreData)
+        val columnNames = matchScoreView.getColumnNames(state)
+        req.setAttribute("columnNames", columnNames)
     }
 }

@@ -13,28 +13,28 @@
     <thead>
     <tr>
         <th>Игрок</th>
-        <th>Сет</th>
-        <th>Игра</th>
-        <th>Очки</th>
+        <th>${columnNames[0]}</th>
+        <th>${columnNames[1]}</th>
+        <th>${columnNames[2]}</th>
         <th></th>
     </tr>
     </thead>
     <tbody>
     <tr>
-        <td>${firstPlayerName}</td>
-        <td>${setsPlayer1}</td>
-        <td>${gamesPlayer1}</td>
-        <td>${pointsPlayer1}</td>
+        <td>${firstPlayer}</td>
+        <td>${scoreData["setsPlayer1"]}</td>
+        <td>${scoreData["gamesPlayer1"]}</td>
+        <td>${scoreData["pointsPlayer1"]}</td>
         <td><form action="${pageContext.request.contextPath}/match-score/${uuid}" method="POST">
             <input type="hidden" name="player" value="player1">
             <button type="submit">Добавить очко</button>
         </form></td>
     </tr>
     <tr>
-        <td>${secondPlayerName}</td>
-        <td>${setsPlayer2}</td>
-        <td>${gamesPlayer2}</td>
-        <td>${pointsPlayer2}</td>
+        <td>${secondPlayer}</td>
+        <td>${scoreData["setsPlayer2"]}</td>
+        <td>${scoreData["gamesPlayer2"]}</td>
+        <td>${scoreData["pointsPlayer2"]}</td>
         <td><form action="${pageContext.request.contextPath}/match-score/${uuid}" method="POST">
             <input type="hidden" name="player" value="player2">
             <button type="submit">Добавить очко</button>
