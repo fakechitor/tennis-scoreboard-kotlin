@@ -6,7 +6,7 @@ import jakarta.persistence.*
 @Table(name = "matches")
 class Match {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     var id: Int = 0
     @Column(name = "player1")
