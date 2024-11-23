@@ -7,45 +7,6 @@ import util.HibernateUtil
 class PlayerRepository : JpaRepository<Player> {
     private val sessionFactory = HibernateUtil.sessionFactory
 
-    override fun getById(id : Int): Player? {
-        var session: Session? = null
-        var player: Player? = null
-
-        try {
-            session = sessionFactory.openSession()
-            val hql = "FROM Player p WHERE p.id = :id"
-            val query = session.createQuery(hql, Player::class.java)
-            query.setParameter("id", id)
-            val result = query.resultList
-            if (result.size > 0 ) {
-                player = result[0]
-            }
-        } catch (e: Exception) {
-            session?.transaction?.rollback()
-            e.printStackTrace()
-        }
-        finally {
-            session?.close()
-        }
-        return player
-    }
-
-    override fun getAll(): List<Player> {
-        var session : Session? = null
-        var players : List<Player> = listOf()
-        try{
-            session = sessionFactory.openSession()
-            val hql = "FROM Player"
-            val query = session.createQuery(hql, Player::class.java)
-            players = query.resultList.toList()
-        }catch (e: Exception) {
-            session?.transaction?.rollback()
-            e.printStackTrace()
-
-        }
-        return players
-    }
-
     override fun save(entity: Player): Player {
         var session: Session? = null
         try {

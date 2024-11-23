@@ -23,14 +23,6 @@ class FinishedMatchesPersistenceService {
         }
     }
 
-    fun getById(id : Int): Match? {
-        return matchRepository.getById(id)
-    }
-
-    fun getAll(): List<Match>? {
-        return matchRepository.getAll()
-    }
-
     fun save(match: Match): Match {
         return matchRepository.save(match)
     }
