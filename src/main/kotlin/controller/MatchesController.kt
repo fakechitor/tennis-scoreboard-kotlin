@@ -15,15 +15,17 @@ class MatchesController : HttpServlet() {
 
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
         val page = req.getParameter("page").toInt()
-        val name = req.getParameter("filter_by_player_name") ?: null
+        val name = req.getParameter("filter_by_player_name") ?: ""
         //TODO make validation for page > 0
         val matchesRequest = MatchesRequestDto(page , name)
         val finishedMatches = finishedMatches.getMatches(matchesRequest)
+        // TODO make setAttribute more beautiful)
         req.setAttribute("matches", finishedMatches)
         req.setAttribute("additional", 5 * (page-1))
         req.setAttribute("page" ,page.toString())
         req.setAttribute("size", 5)
         req.setAttribute("totalPages", 2)
+        req.setAttribute("filterName", name)
         req.getRequestDispatcher(PATH_TO_JSP).forward(req, resp)
     }
 }

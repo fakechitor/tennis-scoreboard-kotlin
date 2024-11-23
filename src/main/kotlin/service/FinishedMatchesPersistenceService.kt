@@ -11,13 +11,15 @@ class FinishedMatchesPersistenceService {
     private val matchRepository = MatchRepository()
 
     fun getMatches(matchesReqDto : MatchesRequestDto): List<MatchWinnerDto> {
+        val skipRowsCount = (matchesReqDto.page - 1) * OBJECT_ON_PAGE
+        val maxRowsCount = OBJECT_ON_PAGE * matchesReqDto.page
         if (matchesReqDto.filterName == "") {
-            val skipRowsCount = ( matchesReqDto.page - 1 ) * OBJECT_ON_PAGE
-            val matches = matchRepository.getMatchesResults(OBJECT_ON_PAGE * matchesReqDto.page, skipRowsCount)
+            val matches = matchRepository.getMatchesResults(maxRowsCount, skipRowsCount)
             return matches
         }
         else {
-            TODO()
+            val matches = matchRepository.getFilteredMatchesResults(matchesReqDto.filterName, maxRowsCount, skipRowsCount)
+            return matches
         }
     }
 

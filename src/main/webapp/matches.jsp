@@ -8,6 +8,13 @@
     <title>Matches</title>
 </head>
 <body>
+<form action="${pageContext.request.contextPath}/matches" method="GET">
+    <label for="filter_by_player_name">Игрок:</label>
+    <input type="hidden" name="page" value="1">
+    <input type="text" id="filter_by_player_name" name="filter_by_player_name" placeholder="Введите игрока">
+    <button type="submit">Искать</button>
+</form>
+<br>
 <table>
     <thead>
     <tr>
@@ -31,7 +38,7 @@
 
 <div class="pagination">
 <c:if test="${page > 1}">
-    <a href="${pageContext.request.contextPath}/matches?page=${page -1}&filter_by_player_name=">&laquo; Previous</a>
+    <a href="${pageContext.request.contextPath}/matches?page=${page -1}&filter_by_player_name=${filterName}">&laquo; Previous</a>
 </c:if>
 
 <c:forEach begin="1" end="${totalPages}" var="i">
@@ -40,13 +47,13 @@
             <span class="current">${i}</span>
         </c:when>
         <c:otherwise>
-            <a href="${pageContext.request.contextPath}/matches?page=${i}&filter_by_player_name=">${i}</a>
+            <a href="${pageContext.request.contextPath}/matches?page=${i}&filter_by_player_name=${filterName}">${i}</a>
         </c:otherwise>
     </c:choose>
 </c:forEach>
 
 <c:if test="${page < totalPages}">
-    <a href="${pageContext.request.contextPath}/matches?page=${page + 1}&filter_by_player_name=">Next &raquo;</a>
+    <a href="${pageContext.request.contextPath}/matches?page=${page + 1}&filter_by_player_name=${filterName}">Next &raquo;</a>
 </c:if>
 </div>
 
