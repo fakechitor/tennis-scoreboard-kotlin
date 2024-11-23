@@ -9,9 +9,11 @@ class PlayerService {
     private val playerRepository = PlayerRepository()
     private var mapper = ModelMapper()
 
-    fun getByName(name: String) : Player? {
-        return playerRepository.getByName(name)
+    fun findOrCreatePlayer(name: String): Player {
+        val player = playerRepository.getByName(name) ?: return save(PlayerDto(name))
+        return player
     }
+
     fun save(playerDto: PlayerDto) : Player {
         val player = mapper.map(playerDto, Player::class.java)
         return playerRepository.save(player)
