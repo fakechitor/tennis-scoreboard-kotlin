@@ -12,7 +12,7 @@ private const val PATH_TO_JSP = "/matches.jsp"
 
 @WebServlet(urlPatterns = ["/matches"])
 class MatchesController : HttpServlet() {
-    private val finishedMatches = FinishedMatchesPersistenceService()
+    private val matchService = FinishedMatchesPersistenceService()
     private val validation = Validation()
 
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
@@ -22,13 +22,15 @@ class MatchesController : HttpServlet() {
             validation.validateMatchesAttributes(page, name)
             val pageNumber = page.toInt()
             val matchesRequest = MatchesRequestDto(pageNumber, name)
-            val finishedMatches = finishedMatches.getMatches(matchesRequest)
+            val finishedMatches = matchService.getMatches(matchesRequest)
+            val totalMatches = matchService.getMatchesAmount()
+            val totalPages = (totalMatches + 4 ) / 5
             // TODO make setAttribute more beautiful)
             req.setAttribute("matches", finishedMatches)
             req.setAttribute("additional", 5 * (pageNumber - 1))
-            req.setAttribute("page", page)
+            req.setAttribute("page", pageNumber)
             req.setAttribute("size", 5)
-            req.setAttribute("totalPages", 2)
+            req.setAttribute("totalPages", totalPages)
             req.setAttribute("filterName", name)
             req.getRequestDispatcher(PATH_TO_JSP).forward(req, resp)
         } catch (e: IllegalArgumentException) {

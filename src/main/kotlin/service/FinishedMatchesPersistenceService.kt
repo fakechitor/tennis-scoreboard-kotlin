@@ -12,7 +12,7 @@ class FinishedMatchesPersistenceService {
 
     fun getMatches(matchesReqDto: MatchesRequestDto): List<MatchWinnerDto> {
         val skipRowsCount = (matchesReqDto.page - 1) * OBJECT_ON_PAGE
-        val maxRowsCount = OBJECT_ON_PAGE * matchesReqDto.page
+        val maxRowsCount = 5
         if (matchesReqDto.filterName == "") {
             val matches = matchRepository.getMatchesResults(maxRowsCount, skipRowsCount)
             return matches
@@ -23,6 +23,9 @@ class FinishedMatchesPersistenceService {
         }
     }
 
+    fun getMatchesAmount(): Int {
+        return matchRepository.getAll().size
+    }
     fun save(match: Match): Match {
         return matchRepository.save(match)
     }
