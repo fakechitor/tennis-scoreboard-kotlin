@@ -4,7 +4,7 @@ import java.io.InputStream
 
 class Validation {
 
-    fun validateMatchesAttributes(page: String, name: String) {
+    fun validateMatchesAttributes(page: String) {
         checkPageValueIsNumber(page)
         checkPageValueIsPositive(page)
     }
