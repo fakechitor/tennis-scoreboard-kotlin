@@ -1,0 +1,348 @@
+.top-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background-color: rgb(216, 216, 216);
+    color: black;
+    font-family: "Space Mono", monospace;
+    font-size: x-large;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;  /* Размещение элементов с промежутком */
+    padding: 0 20px; /* Отступы слева и справа */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    box-sizing: border-box; /* Учитываем padding в общей ширине */
+}
+
+.icon {
+    width: 30px; /* Размер иконки */
+    height: 30px; /* Размер иконки */
+    margin-left: 10px; /* Отступ между текстом и иконкой */
+    object-fit: contain; /* Обеспечивает правильное отображение изображения */
+}
+
+.title-link {
+    text-decoration: none;
+    color: black;
+    font-size: x-large;
+    font-weight: bold;
+    text-align: center;
+}
+
+.matches a {
+    color: black; /* Устанавливаем черный цвет текста */
+    text-decoration: none; /* Убираем подчеркивание */
+}
+
+.matches a:hover {
+    color: black; /* Гарантируем, что цвет остается черным при наведении */
+    text-decoration: none; /* Убираем подчеркивание при наведении */
+}
+
+.matches {
+    display: flex;
+    justify-content: flex-end; /* Выровнять "Matches" вправо */
+    align-items: center;
+    padding: 0 10px; /* Отступы внутри блока "Matches" */
+    white-space: nowrap; /* Остановить перенос текста */
+}
+
+.button-container {
+    margin-top: 60px;
+    text-align: center;
+}
+
+.button {
+    font-size: 24px;
+    font-family: "Space Mono", monospace;
+    display: inline-block;
+    color: white;
+    background-color: #c8c6c6;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+    margin: 10px;
+}
+
+.button:hover {
+    background-color: #828282;
+}
+
+.content {
+    padding: 20px;
+    padding-top: 70px; /* Увеличиваем верхний отступ */
+    line-height: 1.2;
+}
+
+table {
+    width: 90%; /* Ширина таблицы - 90% от экрана */
+    max-width: 800px; /* Максимальная ширина таблицы */
+    margin: 20px auto; /* Центрируем таблицу */
+    border-collapse: collapse; /* Убираем двойные границы */
+    font-family: "Space Mono", monospace;
+    font-size: 16px; /* Базовый размер текста */
+    text-align: left;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень для таблицы */
+}
+
+caption {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #333;
+}
+
+thead th, tbody td {
+    padding: 8px; /* Отступы внутри ячеек */
+    border-bottom: 1px solid #ddd;
+}
+
+thead {
+    background-color: #f4f4f4;
+}
+
+tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+button {
+    background-color: #c8c6c6;
+    font-family: "Space Mono", monospace;
+    color: black;
+    border: none;
+    padding: 6px 10px;
+    font-size: 14px; /* Размер кнопки */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #828282;
+}
+
+/* Адаптивные стили */
+@media (max-width: 768px) {
+    table {
+        width: 100%; /* На узких экранах таблица занимает всю ширину */
+        font-size: 14px; /* Уменьшаем размер текста */
+    }
+
+    button {
+        font-size: 12px; /* Уменьшаем размер кнопок */
+        padding: 4px 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    table {
+        font-size: 12px; /* Ещё меньше текст для компактных устройств */
+    }
+
+    button {
+        font-size: 10px;
+        padding: 3px 6px;
+    }
+}
+
+/* Стили для формы */
+.form-container {
+    width: 90%;
+    max-width: 400px; /* Ограничение ширины формы */
+    margin: 40px auto; /* Центрирование формы */
+    padding: 20px;
+    background-color: #f9f9f9; /* Фон формы */
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень вокруг формы */
+    font-family: "Space Mono", monospace;
+}
+
+h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.input-field {
+    width: calc(100% - 20px); /* Поля занимают почти всю ширину формы */
+    padding: 10px; /* Отступ внутри поля */
+    margin-bottom: 20px; /* Отступ между полями */
+    font-size: 16px;
+    font-family: "Space Mono", monospace;
+    border: 1px solid #ccc; /* Граница поля */
+    border-radius: 5px; /* Скруглённые края */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Лёгкая внутренняя тень */
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-field:focus {
+    border-color: #828282; /* Цвет границы при фокусе */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    outline: none; /* Убираем стандартную подсветку */
+}
+
+.form-button {
+    width: 100%; /* Кнопка по ширине формы */
+    padding: 10px 20px;
+    background-color: #c8c6c6;
+    color: black;
+    font-size: 16px;
+    font-family: "Space Mono", monospace;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.form-button:hover {
+    background-color: #828282; /* Цвет кнопки при наведении */
+}
+
+/* Адаптивность формы */
+@media (max-width: 480px) {
+    .form-container {
+        padding: 15px;
+    }
+
+    .input-field {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .form-button {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
+
+/* Стили для пагинации */
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination-button {
+    display: inline-block;
+    font-family: "Space Mono", monospace;
+    font-size: 14px;
+    background-color: #c8c6c6;
+    color: black;
+    padding: 6px 12px;
+    margin: 0 5px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.pagination-button:hover {
+    background-color: #828282;
+}
+
+.pagination-button.current {
+    background-color: #828282;
+    color: white;
+    font-weight: bold;
+}
+
+.pagination-button:active {
+    background-color: #6c6c6c;
+}
+
+.pagination-button:disabled {
+    background-color: #d3d3d3;
+    cursor: not-allowed;
+}
+
+/* Стили для формы поиска */
+.search-form {
+    width: 90%;
+    max-width: 500px; /* Ограничение ширины формы */
+    margin: 40px auto; /* Центрирование формы */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #f9f9f9; /* Фон формы */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень вокруг формы */
+    font-family: "Space Mono", monospace;
+}
+
+.search-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+/* Контейнер для поля ввода и кнопки */
+.input-container {
+    display: flex;
+    gap: 10px; /* Отступ между полем ввода и кнопкой */
+    width: 100%;
+}
+
+/* Поле ввода */
+.search-input {
+    width: 100%; /* Поле ввода на всю ширину, кроме места для кнопки */
+    padding: 10px;
+    font-size: 16px;
+    font-family: "Space Mono", monospace;
+    border: 1px solid #ccc; /* Граница поля */
+    border-radius: 5px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Лёгкая внутренняя тень */
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.search-input:focus {
+    border-color: #828282; /* Цвет границы при фокусе */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    outline: none; /* Убираем стандартную подсветку */
+}
+
+/* Кнопка поиска */
+.search-button {
+    padding: 10px 20px;
+    background-color: #c8c6c6;
+    color: black;
+    font-size: 16px;
+    font-family: "Space Mono", monospace;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap; /* Не позволяет кнопке переноситься */
+}
+
+/* Эффекты при наведении на кнопку */
+.search-button:hover {
+    background-color: #828282;
+}
+
+/* Адаптивные стили */
+@media (max-width: 768px) {
+    .search-form {
+        width: 80%; /* Уменьшаем ширину формы на маленьких экранах */
+    }
+
+    .search-input, .search-button {
+        font-size: 14px; /* Уменьшаем шрифт */
+    }
+}
+
+@media (max-width: 480px) {
+    .search-form {
+        width: 100%;
+    }
+
+    .search-input, .search-button {
+        font-size: 12px; /* Ещё меньше текст для компактных устройств */
+    }
+}

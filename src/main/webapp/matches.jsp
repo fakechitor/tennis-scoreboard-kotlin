@@ -7,14 +7,31 @@
     <link rel="icon" href="flavicone.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Matches</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
-<form action="${pageContext.request.contextPath}/matches" method="GET">
-    <label for="filter_by_player_name">Игрок:</label>
-    <input type="hidden" name="page" value="1">
-    <input type="text" id="filter_by_player_name" name="filter_by_player_name" placeholder="Введите игрока">
-    <button type="submit">Искать</button>
+<div class="top-panel">
+    <a href="${pageContext.request.contextPath}" class="title-link">
+        <span>Tennis scoreboard</span>
+    </a>
+    <div class="matches">
+        <a href="${pageContext.request.contextPath}/matches?page=1&filter_by_player_name=">
+            <span>Matches</span>
+        </a>
+    </div>
+</div>
+<form action="${pageContext.request.contextPath}/matches" method="GET" class="search-form">
+    <label for="filter_by_player_name" class="search-label">Игрок:</label>
+    <div class="input-container">
+        <input type="hidden" name="page" value="1">
+        <input type="text" id="filter_by_player_name" name="filter_by_player_name" value="${filterName}" placeholder="Введите игрока" class="search-input">
+        <button type="submit" class="search-button">Искать</button>
+    </div>
 </form>
+
 <br>
 <table>
     <thead>
@@ -39,26 +56,23 @@
 
 <div class="pagination">
     <c:if test="${page > 1}">
-        <a href="${pageContext.request.contextPath}/matches?page=${page -1}&filter_by_player_name=${filterName}">&laquo;
-            Previous</a>
+        <a href="${pageContext.request.contextPath}/matches?page=${page - 1}&filter_by_player_name=${filterName}" class="pagination-button">&laquo; Previous</a>
     </c:if>
 
     <c:forEach begin="1" end="${totalPages}" var="i">
         <c:choose>
             <c:when test="${i == page}">
-                <span class="current">${i}</span>
+                <span class="pagination-button current">${i}</span>
             </c:when>
             <c:otherwise>
-                <a href="${pageContext.request.contextPath}/matches?page=${i}&filter_by_player_name=${filterName}">${i}</a>
+                <a href="${pageContext.request.contextPath}/matches?page=${i}&filter_by_player_name=${filterName}" class="pagination-button">${i}</a>
             </c:otherwise>
         </c:choose>
     </c:forEach>
 
     <c:if test="${page < totalPages}">
-        <a href="${pageContext.request.contextPath}/matches?page=${page + 1}&filter_by_player_name=${filterName}">Next
-            &raquo;</a>
+        <a href="${pageContext.request.contextPath}/matches?page=${page + 1}&filter_by_player_name=${filterName}" class="pagination-button">Next &raquo;</a>
     </c:if>
 </div>
-
 </body>
 </html>
