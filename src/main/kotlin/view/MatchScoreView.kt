@@ -35,11 +35,11 @@ class MatchScoreView {
     private fun prepareMatchScoreWithUnderLower(match: MatchScoreModel): Map<String, Any> {
         val matchData = mutableMapOf<String, Any>()
 
-        matchData[CurrentScoreKey.PLAYER_1_POINTS] = if (match.statsPlayer1.advantage == HAVE_ADVANTAGE) "+" else "-"
+        matchData[CurrentScoreKey.PLAYER_1_POINTS] = if (match.statsPlayer1.advantage == HAVE_ADVANTAGE) "AD" else "40"
         matchData[CurrentScoreKey.PLAYER_1_GAMES] = match.statsPlayer1.game
         matchData[CurrentScoreKey.PLAYER_1_SETS] = match.statsPlayer1.set
 
-        matchData[CurrentScoreKey.PLAYER_2_POINTS] = if (match.statsPlayer2.advantage == HAVE_ADVANTAGE) "+" else "-"
+        matchData[CurrentScoreKey.PLAYER_2_POINTS] = if (match.statsPlayer2.advantage == HAVE_ADVANTAGE) "AD" else "40"
         matchData[CurrentScoreKey.PLAYER_2_GAMES] = match.statsPlayer2.game
         matchData[CurrentScoreKey.PLAYER_2_SETS] = match.statsPlayer2.set
 
