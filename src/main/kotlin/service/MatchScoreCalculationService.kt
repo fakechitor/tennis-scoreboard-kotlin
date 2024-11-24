@@ -8,6 +8,13 @@ import kotlin.math.abs
 private const val WINNING_SETS_COUNT = 2
 private const val HAVE_ADVANTAGE = 1
 private const val NOT_HAVE_ADVANTAGE = 0
+private const val REQUIRED_DIFFERENCE = 2
+// required for tiebreak/matches where difference between game score == 2
+private const val GAMES_REQUIRED_COUNT = 7
+// required for matches where difference between game score > 2
+private const val GAMES_REQUIRED_COUNT_2 = 6
+
+
 
 
 class MatchScoreCalculationService {
@@ -123,9 +130,8 @@ class MatchScoreCalculationService {
 
     private fun updateGames(matchScore: MatchScoreModel, player: String) {
         val stats = getScoredPlayerStats(matchScore, player)
-        // TODO fix magic number
         stats["game"] = stats["game"]!! + 1
-        if (tiebreakFlag && stats["game"] == 7) {
+        if (tiebreakFlag && stats["game"] == GAMES_REQUIRED_COUNT) {
             tiebreakFlag = false
             saveSetResults(matchScore)
             resetGameScores(matchScore)
@@ -134,8 +140,7 @@ class MatchScoreCalculationService {
             tiebreakFlag = true
             resetGameScores(matchScore)
         }
-        //TODO split expression to methods
-        else if (!tiebreakFlag && (stats["game"] == 6 || stats["game"] == 7) && getGamesScoreDifference(matchScore)) {
+        else if (canWinGameWithoutTiebreak(matchScore, player)) {
             tiebreakFlag = false
             saveSetResults(matchScore)
             resetGameScores(matchScore)
@@ -143,10 +148,15 @@ class MatchScoreCalculationService {
         }
     }
 
-    private fun getGamesScoreDifference(matchScore: MatchScoreModel): Boolean {
+    private fun canWinGameWithoutTiebreak(matchScore : MatchScoreModel, player: String): Boolean{
+        val stats = getScoredPlayerStats(matchScore, player)
+        return !tiebreakFlag && (stats["game"] == GAMES_REQUIRED_COUNT_2 || stats["game"] == GAMES_REQUIRED_COUNT) && isScoreDifference(matchScore)
+    }
+
+    private fun isScoreDifference(matchScore: MatchScoreModel): Boolean {
         val gamesCountPlayer1 = matchScore.statsPlayer1["game"]!!
         val gameCountPlayer2 = matchScore.statsPlayer2["game"]!!
-        return abs(gamesCountPlayer1 - gameCountPlayer2) >= 2
+        return abs(gamesCountPlayer1 - gameCountPlayer2) >= REQUIRED_DIFFERENCE
     }
 
     private fun resetGameScores(matchScore: MatchScoreModel) {
