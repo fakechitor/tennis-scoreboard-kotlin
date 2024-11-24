@@ -9,13 +9,17 @@ class Match {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     var id: Int = 0
+
     @Column(name = "player1")
     var player1: Int = 0
+
     @Column(name = "player2")
     var player2: Int = 0
+
     @Column(name = "winner")
-    var winner : Int? = null
-    constructor(){}
+    var winner: Int? = null
+
+    constructor() {}
 
     constructor(player1: Int, player2: Int, winner: Int) : this() {
         this.player1 = player1
@@ -23,7 +27,7 @@ class Match {
         this.winner = winner
     }
 
-    constructor(player1: Int,player2 : Int)  : this(){
+    constructor(player1: Int, player2: Int) : this() {
         this.player1 = player1
         this.player2 = player2
     }

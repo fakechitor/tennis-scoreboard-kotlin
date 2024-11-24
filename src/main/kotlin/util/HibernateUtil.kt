@@ -10,19 +10,18 @@ object HibernateUtil {
     val sessionFactory = buildSessionFactory()
 
     private fun buildSessionFactory(): SessionFactory {
-        try{
-            return  MetadataSources(StandardServiceRegistryBuilder().build())
+        try {
+            return MetadataSources(StandardServiceRegistryBuilder().build())
                 .addAnnotatedClass(Match::class.java)
                 .addAnnotatedClass(Player::class.java)
                 .buildMetadata()
                 .buildSessionFactory()
-        }
-        catch(e: Throwable){
+        } catch (e: Throwable) {
             throw e
         }
     }
 
-    fun shutdown(){
+    fun shutdown() {
         sessionFactory.close()
     }
 }

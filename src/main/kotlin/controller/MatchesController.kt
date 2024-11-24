@@ -18,7 +18,7 @@ class MatchesController : HttpServlet() {
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
         val page = req.getParameter("page")
         val name = req.getParameter("filter_by_player_name")
-        try{
+        try {
             validation.validateMatchesAttributes(page, name)
             val pageNumber = page.toInt()
             val matchesRequest = MatchesRequestDto(pageNumber, name)
@@ -31,10 +31,7 @@ class MatchesController : HttpServlet() {
             req.setAttribute("totalPages", 2)
             req.setAttribute("filterName", name)
             req.getRequestDispatcher(PATH_TO_JSP).forward(req, resp)
-        }
-        catch (e: IllegalArgumentException){
-            e.printStackTrace()
-            resp.characterEncoding = "UTF-8"
+        } catch (e: IllegalArgumentException) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.message)
         }
     }

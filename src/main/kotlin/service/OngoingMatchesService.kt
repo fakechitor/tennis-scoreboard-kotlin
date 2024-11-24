@@ -14,9 +14,8 @@ object OngoingMatchesService {
     fun putMatch(id: String, match: MatchScoreModel) {
         map[id] = match
     }
+
     fun deleteMatch(uuid: String) {
         map.remove(uuid)
     }
-
-
 }

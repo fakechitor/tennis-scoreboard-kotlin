@@ -8,7 +8,7 @@ import util.HibernateUtil
 class MatchRepository : JpaRepository<Match> {
     private val sessionFactory = HibernateUtil.sessionFactory
 
-    fun getMatchesResults(limit : Int, offset : Int): List<MatchWinnerDto> {
+    fun getMatchesResults(limit: Int, offset: Int): List<MatchWinnerDto> {
         var session: Session? = null
         var matches: List<MatchWinnerDto> = listOf()
         try {
@@ -44,7 +44,7 @@ class MatchRepository : JpaRepository<Match> {
         return matches
     }
 
-    fun getFilteredMatchesResults(name : String, limit : Int, offset : Int) : List<MatchWinnerDto> {
+    fun getFilteredMatchesResults(name: String, limit: Int, offset: Int): List<MatchWinnerDto> {
         var session: Session? = null
         var matches: List<MatchWinnerDto> = listOf()
         try {
@@ -95,8 +95,7 @@ class MatchRepository : JpaRepository<Match> {
             session?.transaction?.rollback()
             e.printStackTrace()
             throw e
-        }
-        finally {
+        } finally {
             session?.close()
         }
     }

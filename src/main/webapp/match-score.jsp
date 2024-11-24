@@ -25,20 +25,24 @@
         <td>${scoreData["setsPlayer1"]}</td>
         <td>${scoreData["gamesPlayer1"]}</td>
         <td>${scoreData["pointsPlayer1"]}</td>
-        <td><form action="${pageContext.request.contextPath}/match-score?uuid=${uuid}" method="POST">
-            <input type="hidden" name="player" value="player1">
-            <button type="submit">Добавить очко</button>
-        </form></td>
+        <td>
+            <form action="${pageContext.request.contextPath}/match-score?uuid=${uuid}" method="POST">
+                <input type="hidden" name="player" value="player1">
+                <button type="submit">Добавить очко</button>
+            </form>
+        </td>
     </tr>
     <tr>
         <td>${secondPlayer}</td>
         <td>${scoreData["setsPlayer2"]}</td>
         <td>${scoreData["gamesPlayer2"]}</td>
         <td>${scoreData["pointsPlayer2"]}</td>
-        <td><form action="${pageContext.request.contextPath}/match-score?uuid=${uuid}" method="POST">
-            <input type="hidden" name="player" value="player2">
-            <button type="submit">Добавить очко</button>
-        </form></td>
+        <td>
+            <form action="${pageContext.request.contextPath}/match-score?uuid=${uuid}" method="POST">
+                <input type="hidden" name="player" value="player2">
+                <button type="submit">Добавить очко</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>

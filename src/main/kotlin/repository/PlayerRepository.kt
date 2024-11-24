@@ -19,8 +19,7 @@ class PlayerRepository : JpaRepository<Player> {
             session?.transaction?.rollback()
             e.printStackTrace()
             throw e
-        }
-        finally {
+        } finally {
             session?.close()
         }
     }
@@ -35,14 +34,13 @@ class PlayerRepository : JpaRepository<Player> {
             val query = session.createQuery(hql, Player::class.java)
             query.setParameter("name", name)
             val result = query.resultList
-            if (result.size > 0 ) {
+            if (result.size > 0) {
                 player = result[0]
             }
         } catch (e: Exception) {
             session?.transaction?.rollback()
             e.printStackTrace()
-        }
-        finally {
+        } finally {
             session?.close()
         }
         return player

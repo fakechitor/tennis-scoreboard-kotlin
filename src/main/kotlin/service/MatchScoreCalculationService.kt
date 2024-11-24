@@ -11,18 +11,18 @@ private const val NOT_HAVE_ADVANTAGE = 0
 
 
 class MatchScoreCalculationService {
-    private var tiebreakFlag : Boolean = false
-    private var underLowerFlag : Boolean = false
+    private var tiebreakFlag: Boolean = false
+    private var underLowerFlag: Boolean = false
 
     fun updateMatchState(matchScore: MatchScoreModel, player: String) {
-         when {
+        when {
             tiebreakFlag -> updateGames(matchScore, player)
             underLowerFlag -> handleAdvantageCase(matchScore, player)
-            else ->  updateScoreStats(matchScore, player)
+            else -> updateScoreStats(matchScore, player)
         }
     }
 
-    fun getMatchState() : GameState {
+    fun getMatchState(): GameState {
         return when {
             tiebreakFlag -> GameState.TIEBREAK
             underLowerFlag -> GameState.UNDER_LOWER
@@ -40,9 +40,11 @@ class MatchScoreCalculationService {
                 updateGames(matchScore, player)
                 underLowerFlag = false
             }
+
             anotherPlayerStats["advantage"] -> {
                 resetAdvantage(matchScore)
             }
+
             else -> {
                 resetAdvantage(matchScore)
                 scoredPlayerStats["advantage"] = HAVE_ADVANTAGE
@@ -50,48 +52,46 @@ class MatchScoreCalculationService {
         }
     }
 
-    private fun resetAdvantage(matchScore: MatchScoreModel){
+    private fun resetAdvantage(matchScore: MatchScoreModel) {
         matchScore.statsPlayer1["advantage"] = NOT_HAVE_ADVANTAGE
         matchScore.statsPlayer2["advantage"] = NOT_HAVE_ADVANTAGE
     }
 
-    private fun checkGameFinished(match : MatchScoreModel) {
+    private fun checkGameFinished(match: MatchScoreModel) {
         if (match.statsPlayer1["set"] == WINNING_SETS_COUNT) {
             saveSetResults(match)
             match.match.winner = match.match.player1
             throw GameFinishedException()
-        }
-        else if (match.statsPlayer2["set"] == WINNING_SETS_COUNT) {
+        } else if (match.statsPlayer2["set"] == WINNING_SETS_COUNT) {
             saveSetResults(match)
             match.match.winner = match.match.player2
             throw GameFinishedException()
         }
     }
 
-    private fun updateScoreStats(matchScore : MatchScoreModel, player: String) {
+    private fun updateScoreStats(matchScore: MatchScoreModel, player: String) {
         updatePoints(matchScore, player)
     }
 
-    private fun getScoredPlayerStats(matchScore: MatchScoreModel, scoredPlayer : String) : MutableMap<String, Int> {
-        return when(scoredPlayer){
+    private fun getScoredPlayerStats(matchScore: MatchScoreModel, scoredPlayer: String): MutableMap<String, Int> {
+        return when (scoredPlayer) {
             "player1" -> matchScore.statsPlayer1
             else -> matchScore.statsPlayer2
         }
     }
 
-    private fun getAnotherPlayerStats(matchScore : MatchScoreModel, player: String) : MutableMap<String, Int> {
-        return when(player) {
+    private fun getAnotherPlayerStats(matchScore: MatchScoreModel, player: String): MutableMap<String, Int> {
+        return when (player) {
             "player1" -> matchScore.statsPlayer2
             else -> matchScore.statsPlayer1
         }
     }
 
-    private fun isTiebreakState(matchScore: MatchScoreModel) : Boolean{
+    private fun isTiebreakState(matchScore: MatchScoreModel): Boolean {
         val gameCountPlayer1 = matchScore.statsPlayer1["game"]
         val gameCountPlayer2 = matchScore.statsPlayer2["game"]
         return gameCountPlayer1 == 6 && gameCountPlayer2 == 6
     }
-
 
 
     private fun updatePoints(matchScore: MatchScoreModel, player: String) {
@@ -103,6 +103,7 @@ class MatchScoreCalculationService {
                 stats["point"] = stats["point"]!! + 10
                 isGameOverUnder(matchScore)
             }
+
             40 -> {
                 resetPointScores(matchScore)
                 updateGames(matchScore, player)
@@ -111,7 +112,7 @@ class MatchScoreCalculationService {
     }
 
 
-    private fun isGameOverUnder(matchScore: MatchScoreModel){
+    private fun isGameOverUnder(matchScore: MatchScoreModel) {
         val pointsPlayer1 = matchScore.statsPlayer1["point"]
         val pointsPlayer2 = matchScore.statsPlayer2["point"]
         if (pointsPlayer1 == 40 && pointsPlayer2 == 40) {
@@ -124,18 +125,17 @@ class MatchScoreCalculationService {
         val stats = getScoredPlayerStats(matchScore, player)
         // TODO fix magic number
         stats["game"] = stats["game"]!! + 1
-        if (tiebreakFlag && stats["game"] == 7){
+        if (tiebreakFlag && stats["game"] == 7) {
             tiebreakFlag = false
             saveSetResults(matchScore)
             resetGameScores(matchScore)
             updateSets(matchScore, player)
-        }
-        else if (!tiebreakFlag && isTiebreakState(matchScore)) {
+        } else if (!tiebreakFlag && isTiebreakState(matchScore)) {
             tiebreakFlag = true
             resetGameScores(matchScore)
         }
-            //TODO split expression to methods
-        else if (!tiebreakFlag && (stats["game"] == 6 || stats["game"] == 7) && getGamesScoreDifference(matchScore) ) {
+        //TODO split expression to methods
+        else if (!tiebreakFlag && (stats["game"] == 6 || stats["game"] == 7) && getGamesScoreDifference(matchScore)) {
             tiebreakFlag = false
             saveSetResults(matchScore)
             resetGameScores(matchScore)
@@ -143,7 +143,7 @@ class MatchScoreCalculationService {
         }
     }
 
-    private fun getGamesScoreDifference(matchScore: MatchScoreModel) : Boolean {
+    private fun getGamesScoreDifference(matchScore: MatchScoreModel): Boolean {
         val gamesCountPlayer1 = matchScore.statsPlayer1["game"]!!
         val gameCountPlayer2 = matchScore.statsPlayer2["game"]!!
         return abs(gamesCountPlayer1 - gameCountPlayer2) >= 2

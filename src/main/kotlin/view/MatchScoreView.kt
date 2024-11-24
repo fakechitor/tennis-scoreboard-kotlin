@@ -6,17 +6,17 @@ import model.MatchScoreModel
 
 class MatchScoreView {
 
-    fun getMatchScoreDataForView(matchScore : MatchScoreModel, state : GameState) : Map<String, Any> {
-        return when(state) {
+    fun getMatchScoreDataForView(matchScore: MatchScoreModel, state: GameState): Map<String, Any> {
+        return when (state) {
             GameState.NORMAL -> prepareMatchScore(matchScore)
             GameState.UNDER_LOWER -> prepareMatchScoreWithUnderLower(matchScore)
             GameState.TIEBREAK -> prepareMatchScore(matchScore)
-            GameState.FINISHED ->prepareMatchScoreFinished(matchScore)
+            GameState.FINISHED -> prepareMatchScoreFinished(matchScore)
         }
 
     }
 
-    private fun prepareMatchScore(match: MatchScoreModel) : Map<String, Int> {
+    private fun prepareMatchScore(match: MatchScoreModel): Map<String, Int> {
         val matchData = mutableMapOf<String, Int>()
 
         matchData[CurrentScoreKey.PLAYER_1_POINTS] = match.statsPlayer1["point"] ?: 0
@@ -30,21 +30,21 @@ class MatchScoreView {
         return matchData
     }
 
-    private fun prepareMatchScoreWithUnderLower(match: MatchScoreModel) : Map<String, Any> {
+    private fun prepareMatchScoreWithUnderLower(match: MatchScoreModel): Map<String, Any> {
         val matchData = mutableMapOf<String, Any>()
 
-        matchData[CurrentScoreKey.PLAYER_1_POINTS] =  if (match.statsPlayer1["advantage"] == 1) "+" else "-"
+        matchData[CurrentScoreKey.PLAYER_1_POINTS] = if (match.statsPlayer1["advantage"] == 1) "+" else "-"
         matchData[CurrentScoreKey.PLAYER_1_GAMES] = match.statsPlayer1["game"] ?: 0
         matchData[CurrentScoreKey.PLAYER_1_SETS] = match.statsPlayer1["set"] ?: 0
 
-        matchData[CurrentScoreKey.PLAYER_2_POINTS] =  if (match.statsPlayer2["advantage"] == 1) "+" else "-"
+        matchData[CurrentScoreKey.PLAYER_2_POINTS] = if (match.statsPlayer2["advantage"] == 1) "+" else "-"
         matchData[CurrentScoreKey.PLAYER_2_GAMES] = match.statsPlayer2["game"] ?: 0
         matchData[CurrentScoreKey.PLAYER_2_SETS] = match.statsPlayer2["set"] ?: 0
 
         return matchData
     }
 
-    private fun prepareMatchScoreFinished(match: MatchScoreModel) : Map<String, Any> {
+    private fun prepareMatchScoreFinished(match: MatchScoreModel): Map<String, Any> {
         val matchData = mutableMapOf<String, Any>()
 
         matchData["setsPlayer1"] = match.statsPlayer1["set"] ?: 0
@@ -60,8 +60,8 @@ class MatchScoreView {
         return matchData
     }
 
-    fun getColumnNames(state: GameState) : List<String> {
-        return when(state) {
+    fun getColumnNames(state: GameState): List<String> {
+        return when (state) {
             GameState.NORMAL -> listOf("Сеты", "Геймы", "Очки")
             GameState.TIEBREAK -> listOf("Сеты", "Тайбрейк", "Очки")
             GameState.UNDER_LOWER -> listOf("Сеты", "Геймы", "Преимущество")

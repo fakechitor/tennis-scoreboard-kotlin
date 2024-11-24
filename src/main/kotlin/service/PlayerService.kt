@@ -14,7 +14,7 @@ class PlayerService {
         return player
     }
 
-    fun save(playerDto: PlayerDto) : Player {
+    private fun save(playerDto: PlayerDto): Player {
         val player = mapper.map(playerDto, Player::class.java)
         return playerRepository.save(player)
     }
