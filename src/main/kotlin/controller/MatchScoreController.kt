@@ -22,9 +22,13 @@ class MatchScoreController : HttpServlet() {
 
 
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
-        val uuid = req.getParameter("uuid")
-        addRequestAttributes(uuid, req, GameState.NORMAL)
-        req.getRequestDispatcher(PATH_TO_MATCH_SCORE).forward(req, resp)
+        try {
+            val uuid = req.getParameter("uuid")
+            addRequestAttributes(uuid, req, GameState.NORMAL)
+            req.getRequestDispatcher(PATH_TO_MATCH_SCORE).forward(req, resp)
+        } catch (e: IllegalArgumentException) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.message)
+        }
     }
 
     override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
@@ -33,25 +37,22 @@ class MatchScoreController : HttpServlet() {
             val player = req.getParameter("player")
             val matchScore = OngoingMatchesService.getMatch(uuid)
             calculationService.updateMatchState(matchScore, player)
-            val state  = calculationService.getMatchState()
+            val state = calculationService.getMatchState()
             addRequestAttributes(uuid, req, state)
             req.getRequestDispatcher(PATH_TO_MATCH_SCORE).forward(req, resp)
-        }
-        catch (e : GameFinishedException){
+        } catch (e: GameFinishedException) {
             val matchScore = OngoingMatchesService.getMatch(uuid)
             finishedMatches.save(matchScore.match)
             addRequestAttributes(uuid, req, GameState.FINISHED)
             OngoingMatchesService.deleteMatch(uuid)
             req.getRequestDispatcher(PATH_TO_FINISHED).forward(req, resp)
-        }
-        catch (e: IllegalArgumentException){
-            TODO()
+        } catch (e: IllegalArgumentException) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.message)
         }
     }
 
 
-
-    private fun addRequestAttributes(uuid : String, req: HttpServletRequest, state : GameState) {
+    private fun addRequestAttributes(uuid: String, req: HttpServletRequest, state: GameState) {
         req.setAttribute("uuid", uuid)
         val matchScore = OngoingMatchesService.getMatch(uuid)
         val playersNames = matchScoreView.getNamesList(matchScore)
