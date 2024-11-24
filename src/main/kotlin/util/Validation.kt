@@ -5,8 +5,6 @@ import java.io.InputStream
 class Validation {
 
     fun validateMatchesAttributes(page: String, name: String) {
-        checkNameContainsOnlyLetters(name)
-        checkForbiddenWord(name)
         checkPageValueIsNumber(page)
         checkPageValueIsPositive(page)
     }
