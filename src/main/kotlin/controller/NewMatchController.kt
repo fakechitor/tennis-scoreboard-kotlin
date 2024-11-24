@@ -23,13 +23,19 @@ class NewMatchController : HttpServlet() {
     }
 
     override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
-        val firstPlayerName = req.getParameter("firstPlayer")
-        val secondPlayerName = req.getParameter("secondPlayer")
-        val player1 = playerService.findOrCreatePlayer(firstPlayerName)
-        val player2 = playerService.findOrCreatePlayer(secondPlayerName)
-        val uuid = UUID.randomUUID().toString()
-        val match = Match(player1.id,player2.id)
-        OngoingMatchesService.putMatch(uuid, MatchScoreModel(match, player1.name, player2.name))
-        resp.sendRedirect("${req.contextPath}/match-score?uuid=$uuid")
+        try {
+            val firstPlayerName = req.getParameter("firstPlayer")
+            val secondPlayerName = req.getParameter("secondPlayer")
+            validator.validateNewMatchAttributes(firstPlayerName)
+            validator.validateNewMatchAttributes(secondPlayerName)
+            val player1 = playerService.findOrCreatePlayer(firstPlayerName)
+            val player2 = playerService.findOrCreatePlayer(secondPlayerName)
+            val uuid = UUID.randomUUID().toString()
+            val match = Match(player1.id, player2.id)
+            OngoingMatchesService.putMatch(uuid, MatchScoreModel(match, player1.name, player2.name))
+            resp.sendRedirect("${req.contextPath}/match-score?uuid=$uuid")
+        } catch (e: IllegalArgumentException) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.message)
+        }
     }
 }
