@@ -16,8 +16,8 @@ class MatchesController : HttpServlet() {
     private val validation = Validation()
 
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
-        val page = req.getParameter("page")
-        val name = req.getParameter("filter_by_player_name")
+        val page = req.getParameter("page") ?: "1"
+        val name = req.getParameter("filter_by_player_name") ?: ""
         try {
             validation.validateMatchesAttributes(page, name)
             val pageNumber = page.toInt()
