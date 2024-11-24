@@ -19,7 +19,7 @@
     </a>
     <div class="matches">
         <a href="${pageContext.request.contextPath}/matches?page=1&filter_by_player_name=">
-            <span>Matches</span>
+            <span>Матчи</span>
         </a>
     </div>
 </div>
@@ -56,7 +56,7 @@
 
 <div class="pagination">
     <c:if test="${page > 1}">
-        <a href="${pageContext.request.contextPath}/matches?page=${page - 1}&filter_by_player_name=${filterName}" class="pagination-button">&laquo; Previous</a>
+        <a href="${pageContext.request.contextPath}/matches?page=${page - 1}&filter_by_player_name=${filterName}" class="pagination-button">&laquo; Пред</a>
     </c:if>
 
     <c:forEach begin="1" end="${totalPages}" var="i">
@@ -71,8 +71,18 @@
     </c:forEach>
 
     <c:if test="${page < totalPages}">
-        <a href="${pageContext.request.contextPath}/matches?page=${page + 1}&filter_by_player_name=${filterName}" class="pagination-button">Next &raquo;</a>
+        <a href="${pageContext.request.contextPath}/matches?page=${page + 1}&filter_by_player_name=${filterName}" class="pagination-button">След &raquo;</a>
     </c:if>
 </div>
+<c:if test="${not empty showError}">
+    <input type="checkbox" id="error-toggle" checked style="display:none">
+    <div class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('error-toggle').checked = false;">&times;</span>
+            <h2>Ошибка</h2>
+            <p>${errorMessage}</p>
+        </div>
+    </div>
+</c:if>
 </body>
 </html>

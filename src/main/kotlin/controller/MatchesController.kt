@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse
 import service.FinishedMatchesPersistenceService
 import util.Validation
 
-private const val PATH_TO_JSP = "/matches.jsp"
+private const val PATH_TO_MATCHES = "/matches.jsp"
 private const val OBJECTS_ON_PAGE = 5
 
 @WebServlet(urlPatterns = ["/matches"])
@@ -32,9 +32,11 @@ class MatchesController : HttpServlet() {
             req.setAttribute("size", OBJECTS_ON_PAGE)
             req.setAttribute("totalPages", totalPages)
             req.setAttribute("filterName", name)
-            req.getRequestDispatcher(PATH_TO_JSP).forward(req, resp)
+            req.getRequestDispatcher(PATH_TO_MATCHES).forward(req, resp)
         } catch (e: IllegalArgumentException) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.message)
+            req.setAttribute("showError", true)
+            req.setAttribute("errorMessage", e.localizedMessage)
+            req.getRequestDispatcher(PATH_TO_MATCHES).forward(req, resp)
         }
     }
 }

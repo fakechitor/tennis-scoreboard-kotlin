@@ -27,7 +27,9 @@ class MatchScoreController : HttpServlet() {
             addRequestAttributes(uuid, req, GameState.NORMAL)
             req.getRequestDispatcher(PATH_TO_MATCH_SCORE).forward(req, resp)
         } catch (e: IllegalArgumentException) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.message)
+            req.setAttribute("showError", true)
+            req.setAttribute("errorMessage", e.localizedMessage)
+            req.getRequestDispatcher(PATH_TO_MATCH_SCORE).forward(req, resp)
         }
     }
 
@@ -47,7 +49,9 @@ class MatchScoreController : HttpServlet() {
             OngoingMatchesService.deleteMatch(uuid)
             req.getRequestDispatcher(PATH_TO_FINISHED).forward(req, resp)
         } catch (e: IllegalArgumentException) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.message)
+            req.setAttribute("showError", true)
+            req.setAttribute("errorMessage", e.localizedMessage)
+            req.getRequestDispatcher(PATH_TO_MATCH_SCORE).forward(req, resp)
         }
     }
 

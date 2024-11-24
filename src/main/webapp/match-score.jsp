@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -18,7 +19,7 @@
     </a>
     <div class="matches">
         <a href="${pageContext.request.contextPath}/matches?page=1&filter_by_player_name=">
-            <span>Matches</span>
+            <span>Матчи</span>
         </a>
     </div>
 </div>
@@ -62,7 +63,16 @@
         </tbody>
     </table>
 </div>
-
+<c:if test="${not empty showError}">
+    <input type="checkbox" id="error-toggle" checked style="display:none">
+    <div class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('error-toggle').checked = false;">&times;</span>
+            <h2>Ошибка</h2>
+            <p>${errorMessage}</p>
+        </div>
+    </div>
+</c:if>
 
 </body>
 </html>

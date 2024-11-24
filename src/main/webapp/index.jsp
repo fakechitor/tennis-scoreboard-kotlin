@@ -19,7 +19,7 @@
     </a>
     <div class="matches">
         <a href="${pageContext.request.contextPath}/matches?page=1&filter_by_player_name=">
-            <span>Matches</span>
+            <span>Матчи</span>
         </a>
     </div>
 </div>

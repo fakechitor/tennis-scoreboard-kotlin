@@ -11,6 +11,8 @@ import service.PlayerService
 import util.Validation
 import java.util.*
 
+
+private const val PATH_TO_NEW_MATCH = "/new-match.jsp"
 @WebServlet(name = "New match", value = ["/new-match"])
 class NewMatchController : HttpServlet() {
 
@@ -19,7 +21,7 @@ class NewMatchController : HttpServlet() {
 
 
     override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
-        req.getRequestDispatcher("/new-match.jsp").forward(req, resp)
+        req.getRequestDispatcher(PATH_TO_NEW_MATCH).forward(req, resp)
     }
 
     override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
@@ -35,7 +37,9 @@ class NewMatchController : HttpServlet() {
             OngoingMatchesService.putMatch(uuid, MatchScoreModel(match, player1.name, player2.name))
             resp.sendRedirect("${req.contextPath}/match-score?uuid=$uuid")
         } catch (e: IllegalArgumentException) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, e.message)
+            req.setAttribute("showError", true)
+            req.setAttribute("errorMessage", e.localizedMessage)
+            req.getRequestDispatcher(PATH_TO_NEW_MATCH).forward(req, resp)
         }
     }
 }
