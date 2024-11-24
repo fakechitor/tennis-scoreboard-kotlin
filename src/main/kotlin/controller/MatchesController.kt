@@ -9,6 +9,7 @@ import service.FinishedMatchesPersistenceService
 import util.Validation
 
 private const val PATH_TO_JSP = "/matches.jsp"
+private const val OBJECTS_ON_PAGE = 5
 
 @WebServlet(urlPatterns = ["/matches"])
 class MatchesController : HttpServlet() {
@@ -24,12 +25,11 @@ class MatchesController : HttpServlet() {
             val matchesRequest = MatchesRequestDto(pageNumber, name)
             val finishedMatches = matchService.getMatches(matchesRequest)
             val totalMatches = matchService.getMatchesAmount()
-            val totalPages = (totalMatches + 4 ) / 5
-            // TODO make setAttribute more beautiful)
+            val totalPages = (totalMatches + 4 ) / OBJECTS_ON_PAGE
             req.setAttribute("matches", finishedMatches)
-            req.setAttribute("additional", 5 * (pageNumber - 1))
+            req.setAttribute("additional", OBJECTS_ON_PAGE * (pageNumber - 1))
             req.setAttribute("page", pageNumber)
-            req.setAttribute("size", 5)
+            req.setAttribute("size", OBJECTS_ON_PAGE)
             req.setAttribute("totalPages", totalPages)
             req.setAttribute("filterName", name)
             req.getRequestDispatcher(PATH_TO_JSP).forward(req, resp)
