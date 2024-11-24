@@ -18,11 +18,12 @@ class MatchScoreCalculationTest {
             "game" to 0
         )
         matchScoreModel.statsPlayer2 = mutableMapOf(
-            "point" to 0
+            "point" to 15
         )
 
         matchScoreCalculationService.updateMatchState(matchScoreModel, "player1")
         assertEquals(1, matchScoreModel.statsPlayer1["game"])
+        assertEquals(0, matchScoreModel.statsPlayer2["point"])
     }
 
     @Test
@@ -40,6 +41,7 @@ class MatchScoreCalculationTest {
         matchScoreCalculationService.updateMatchState(matchScoreModel, "player1")
         matchScoreCalculationService.updateMatchState(matchScoreModel, "player1")
         assertEquals(40, matchScoreModel.statsPlayer1["point"])
+        assertEquals(40, matchScoreModel.statsPlayer2["point"])
     }
 
     @Test
@@ -60,6 +62,9 @@ class MatchScoreCalculationTest {
 
         matchScoreCalculationService.updateMatchState(matchScoreModel, "player1")
         assertEquals(0, matchScoreModel.statsPlayer1["game"])
+        assertEquals(0, matchScoreModel.statsPlayer2["game"])
+        assertEquals(0, matchScoreModel.statsPlayer1["set"])
+        assertEquals(0, matchScoreModel.statsPlayer2["set"])
     }
 
     @Test
@@ -81,5 +86,9 @@ class MatchScoreCalculationTest {
         matchScoreCalculationService.updateMatchState(matchScoreModel, "player1")
         matchScoreCalculationService.updateMatchState(matchScoreModel, "player1")
         assertEquals(1, matchScoreModel.statsPlayer1["game"])
+        assertEquals(0, matchScoreModel.statsPlayer2["game"])
+        assertEquals(0, matchScoreModel.statsPlayer1["set"])
+        assertEquals(0, matchScoreModel.statsPlayer2["set"])
+
     }
 }
