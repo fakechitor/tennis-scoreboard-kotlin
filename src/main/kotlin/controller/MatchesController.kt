@@ -26,7 +26,7 @@ class MatchesController : HttpServlet() {
             val matchesRequest = MatchesRequestDto(pageNumber, name)
             val finishedMatches = matchService.getMatches(matchesRequest)
             val totalMatches = matchService.getMatchesAmount(name)
-            val totalPages = (totalMatches + 4 ) / OBJECTS_ON_PAGE
+            val totalPages = (totalMatches + OBJECTS_ON_PAGE - 1 ) / OBJECTS_ON_PAGE
             req.setAttribute("matches", finishedMatches)
             req.setAttribute("additional", OBJECTS_ON_PAGE * (pageNumber - 1))
             req.setAttribute("page", pageNumber)
