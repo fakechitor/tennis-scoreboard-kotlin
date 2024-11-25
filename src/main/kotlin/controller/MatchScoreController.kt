@@ -52,6 +52,10 @@ class MatchScoreController : HttpServlet() {
             req.setAttribute("showError", true)
             req.setAttribute("errorMessage", e.localizedMessage)
             req.getRequestDispatcher(PATH_TO_MATCH_SCORE).forward(req, resp)
+        } catch (e: RuntimeException) {
+            req.setAttribute("showError", true)
+            req.setAttribute("errorMessage", e.localizedMessage)
+            req.getRequestDispatcher(PATH_TO_MATCH_SCORE).forward(req, resp)
         }
     }
 
