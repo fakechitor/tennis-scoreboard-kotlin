@@ -21,8 +21,8 @@ class Validation {
     }
 
     private fun checkNameLengthIsGood(name: String) {
-        if (name.length <= 3 || name.length >= 20) {
-            throw IllegalArgumentException("Имя должно содержать от 3 до 20 символов")
+        if (name.length >= 20) {
+            throw IllegalArgumentException("Имя может содержать до 20 символов")
         }
     }
     private fun checkNamesIsDifferent(name1: String, name2: String) {
