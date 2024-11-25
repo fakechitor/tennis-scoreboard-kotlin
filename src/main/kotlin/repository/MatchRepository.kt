@@ -98,6 +98,22 @@ class MatchRepository : JpaRepository<Match> {
         return matches
     }
 
+    fun getAllWithName(name: String): List<Match>{
+        var session : Session? = null
+        var matches : List<Match> = listOf()
+        try{
+            session = sessionFactory.openSession()
+            val hql = "FROM Match WHERE name = :name"
+            val query = session.createQuery(hql, Match::class.java)
+            query.setParameter("name", name)
+            matches = query.resultList.toList()
+        }catch (e: Exception) {
+            session?.transaction?.rollback()
+            e.printStackTrace()
+        }
+        return matches
+    }
+
     override fun save(entity: Match): Match {
         var session: Session? = null
         try {

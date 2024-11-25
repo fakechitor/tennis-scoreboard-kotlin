@@ -23,8 +23,11 @@ class FinishedMatchesPersistenceService {
         }
     }
 
-    fun getMatchesAmount(): Int {
-        return matchRepository.getAll().size
+    fun getMatchesAmount(name : String): Int {
+        if (name == ""){
+            return matchRepository.getAll().size
+        }
+        return matchRepository.getAllWithName(name).size
     }
     fun save(match: Match): Match {
         return matchRepository.save(match)
