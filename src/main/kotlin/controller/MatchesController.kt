@@ -20,7 +20,7 @@ class MatchesController : HttpServlet() {
         val page = req.getParameter("page") ?: "1"
         val name = req.getParameter("filter_by_player_name").trim()
         try {
-            validation.validateMatchesAttributes(page)
+            validation.validateMatchesAttributes(page, name)
             val pageNumber = page.toInt()
             val matchesRequest = MatchesRequestDto(pageNumber, name)
             val finishedMatches = matchService.getMatches(matchesRequest)
