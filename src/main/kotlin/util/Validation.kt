@@ -9,11 +9,19 @@ class Validation {
         checkPageValueIsPositive(page)
     }
 
-    fun validateNewMatchAttributes(name: String) {
-        checkNameContainsOnlyLetters(name)
-        checkForbiddenWord(name)
+    fun validateNewMatchAttributes(name1: String, name2: String) {
+        checkNamesIsDifferent(name1, name2)
+        checkNameContainsOnlyLetters(name1)
+        checkNameContainsOnlyLetters(name2)
+        checkForbiddenWord(name1)
+        checkForbiddenWord(name2)
     }
 
+    private fun checkNamesIsDifferent(name1: String, name2: String) {
+        if (name1.lowercase() == name2.lowercase()) {
+            throw IllegalArgumentException("Имена игроков должны быть разными")
+        }
+    }
     private fun checkPageValueIsPositive(page: String) {
         if (page.toInt() <= 0) {
             throw IllegalArgumentException("Номер страницы должен быть больше 0")

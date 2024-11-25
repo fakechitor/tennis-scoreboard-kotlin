@@ -26,10 +26,9 @@ class NewMatchController : HttpServlet() {
 
     override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
         try {
-            val firstPlayerName = req.getParameter("firstPlayer")
-            val secondPlayerName = req.getParameter("secondPlayer")
-            validator.validateNewMatchAttributes(firstPlayerName)
-            validator.validateNewMatchAttributes(secondPlayerName)
+            val firstPlayerName = req.getParameter("firstPlayer").trim()
+            val secondPlayerName = req.getParameter("secondPlayer").trim()
+            validator.validateNewMatchAttributes(firstPlayerName, secondPlayerName)
             val player1 = playerService.findOrCreatePlayer(firstPlayerName)
             val player2 = playerService.findOrCreatePlayer(secondPlayerName)
             val uuid = UUID.randomUUID().toString()
