@@ -38,7 +38,7 @@ class Validation {
 
     private fun checkForbiddenWord(name: String) {
         val forbiddenWords = getForbiddenWords()
-        if (name in forbiddenWords) {
+        if (name.lowercase() in forbiddenWords) {
             throw IllegalArgumentException("Вы используете запрещенное имя. Попробуйте другое =)")
         }
     }
