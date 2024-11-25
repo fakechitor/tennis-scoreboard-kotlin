@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="top-panel">
-    <a href="${pageContext.request.contextPath}" class="title-link">
+    <a href="${pageContext.request.contextPath}/" class="title-link">
         <span>Tennis scoreboard</span>
     </a>
     <div class="matches">
