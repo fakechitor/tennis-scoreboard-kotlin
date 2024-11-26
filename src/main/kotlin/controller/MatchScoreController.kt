@@ -16,12 +16,14 @@ private const val PATH_TO_FINISHED = "/finished-match.jsp"
 
 @WebServlet(urlPatterns = ["/match-score/*"])
 class MatchScoreController : HttpServlet() {
-    private val calculationService = MatchScoreCalculationService()
-    private val finishedMatches = FinishedMatchesPersistenceService()
+    private val calculationService = MatchScoreCalculationService
+    private val finishedMatches = FinishedMatchesPersistenceService
     private val matchScoreView = MatchScoreView()
 
-
-    override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
+    override fun doGet(
+        req: HttpServletRequest,
+        resp: HttpServletResponse,
+    ) {
         try {
             val uuid = req.getParameter("uuid")
             addRequestAttributes(uuid, req, GameState.NORMAL)
@@ -33,7 +35,10 @@ class MatchScoreController : HttpServlet() {
         }
     }
 
-    override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
+    override fun doPost(
+        req: HttpServletRequest,
+        resp: HttpServletResponse,
+    ) {
         val uuid = req.getParameter("uuid")
         try {
             val player = req.getParameter("player")
@@ -59,8 +64,11 @@ class MatchScoreController : HttpServlet() {
         }
     }
 
-
-    private fun addRequestAttributes(uuid: String, req: HttpServletRequest, state: GameState) {
+    private fun addRequestAttributes(
+        uuid: String,
+        req: HttpServletRequest,
+        state: GameState,
+    ) {
         req.setAttribute("uuid", uuid)
         val matchScore = OngoingMatchesService.getMatch(uuid)
         val playersNames = matchScoreView.getNamesList(matchScore)

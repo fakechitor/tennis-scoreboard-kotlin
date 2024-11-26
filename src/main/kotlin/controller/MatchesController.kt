@@ -13,10 +13,13 @@ private const val OBJECTS_ON_PAGE = 5
 
 @WebServlet(urlPatterns = ["/matches"])
 class MatchesController : HttpServlet() {
-    private val matchService = FinishedMatchesPersistenceService()
+    private val matchService = FinishedMatchesPersistenceService
     private val validation = Validation()
 
-    override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
+    override fun doGet(
+        req: HttpServletRequest,
+        resp: HttpServletResponse,
+    ) {
         val page = req.getParameter("page") ?: "1"
         val name = req.getParameter("filter_by_player_name") ?: ""
         try {
@@ -26,7 +29,7 @@ class MatchesController : HttpServlet() {
             val matchesRequest = MatchesRequestDto(pageNumber, name)
             val finishedMatches = matchService.getMatches(matchesRequest)
             val totalMatches = matchService.getMatchesAmount(name)
-            val totalPages = (totalMatches + OBJECTS_ON_PAGE - 1 ) / OBJECTS_ON_PAGE
+            val totalPages = (totalMatches + OBJECTS_ON_PAGE - 1) / OBJECTS_ON_PAGE
             req.setAttribute("matches", finishedMatches)
             req.setAttribute("additional", OBJECTS_ON_PAGE * (pageNumber - 1))
             req.setAttribute("page", pageNumber)

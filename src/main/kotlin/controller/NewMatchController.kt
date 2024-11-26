@@ -11,20 +11,24 @@ import service.PlayerService
 import util.Validation
 import java.util.*
 
-
 private const val PATH_TO_NEW_MATCH = "/new-match.jsp"
+
 @WebServlet(name = "New match", value = ["/new-match"])
 class NewMatchController : HttpServlet() {
-
     private val validator = Validation()
-    private val playerService = PlayerService()
+    private val playerService = PlayerService
 
-
-    override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
+    override fun doGet(
+        req: HttpServletRequest,
+        resp: HttpServletResponse,
+    ) {
         req.getRequestDispatcher(PATH_TO_NEW_MATCH).forward(req, resp)
     }
 
-    override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
+    override fun doPost(
+        req: HttpServletRequest,
+        resp: HttpServletResponse,
+    ) {
         try {
             val firstPlayerName = req.getParameter("firstPlayer").trim()
             val secondPlayerName = req.getParameter("secondPlayer").trim()

@@ -7,16 +7,16 @@ import model.MatchScoreModel
 private const val HAVE_ADVANTAGE = true
 
 class MatchScoreView {
-
-    fun getMatchScoreDataForView(matchScore: MatchScoreModel, state: GameState): Map<String, Any> {
-        return when (state) {
+    fun getMatchScoreDataForView(
+        matchScore: MatchScoreModel,
+        state: GameState,
+    ): Map<String, Any> =
+        when (state) {
             GameState.NORMAL -> prepareMatchScore(matchScore)
             GameState.UNDER_LOWER -> prepareMatchScoreWithUnderLower(matchScore)
             GameState.TIEBREAK -> prepareMatchScore(matchScore)
             GameState.FINISHED -> prepareMatchScoreFinished(matchScore)
         }
-
-    }
 
     private fun prepareMatchScore(match: MatchScoreModel): Map<String, Int> {
         val matchData = mutableMapOf<String, Int>()
@@ -62,16 +62,13 @@ class MatchScoreView {
         return matchData
     }
 
-    fun getColumnNames(state: GameState): List<String> {
-        return when (state) {
+    fun getColumnNames(state: GameState): List<String> =
+        when (state) {
             GameState.NORMAL -> listOf("Сеты", "Геймы", "Очки")
             GameState.TIEBREAK -> listOf("Сеты", "Тайбрейк", "Очки")
             GameState.UNDER_LOWER -> listOf("Сеты", "Геймы", "Преимущество")
             GameState.FINISHED -> listOf("Сеты", "Cет 1", "Cет 2", "Cет 3")
         }
-    }
 
-    fun getNamesList(match: MatchScoreModel): List<String> {
-        return listOf(match.namePlayer1, match.namePlayer2)
-    }
+    fun getNamesList(match: MatchScoreModel): List<String> = listOf(match.namePlayer1, match.namePlayer2)
 }

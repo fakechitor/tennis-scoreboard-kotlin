@@ -3,14 +3,19 @@ package util
 import java.io.InputStream
 
 class Validation {
-
-    fun validateMatchesAttributes(page: String, name : String) {
+    fun validateMatchesAttributes(
+        page: String,
+        name: String,
+    ) {
         checkPageValueIsNumber(page)
         checkPageValueIsPositive(page)
         checkNameLengthIsGood(name)
     }
 
-    fun validateNewMatchAttributes(name1: String, name2: String) {
+    fun validateNewMatchAttributes(
+        name1: String,
+        name2: String,
+    ) {
         checkNamesIsDifferent(name1, name2)
         checkNameLengthIsGood(name1)
         checkNameLengthIsGood(name2)
@@ -25,11 +30,16 @@ class Validation {
             throw IllegalArgumentException("Имя может содержать до 20 символов")
         }
     }
-    private fun checkNamesIsDifferent(name1: String, name2: String) {
+
+    private fun checkNamesIsDifferent(
+        name1: String,
+        name2: String,
+    ) {
         if (name1.lowercase() == name2.lowercase()) {
             throw IllegalArgumentException("Имена игроков должны быть разными")
         }
     }
+
     private fun checkPageValueIsPositive(page: String) {
         if (page.toInt() <= 0) {
             throw IllegalArgumentException("Номер страницы должен быть больше 0")

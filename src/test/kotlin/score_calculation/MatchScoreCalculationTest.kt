@@ -7,10 +7,9 @@ import org.junit.jupiter.api.Test
 import service.MatchScoreCalculationService
 
 class MatchScoreCalculationTest {
-
     @Test
     fun testUpdateGamePoints() {
-        val matchScoreCalculationService = MatchScoreCalculationService()
+        val matchScoreCalculationService = MatchScoreCalculationService
         val matchScoreModel = MatchScoreModel(Match(), "", "")
 
         matchScoreModel.statsPlayer1.point = 40
@@ -23,7 +22,7 @@ class MatchScoreCalculationTest {
 
     @Test
     fun testStartUnderLowerCase() {
-        val matchScoreCalculationService = MatchScoreCalculationService()
+        val matchScoreCalculationService = MatchScoreCalculationService
         val matchScoreModel = MatchScoreModel(Match(), "", "")
 
         matchScoreModel.statsPlayer1.point = 30
@@ -37,7 +36,7 @@ class MatchScoreCalculationTest {
 
     @Test
     fun testTiebreakStart() {
-        val matchScoreCalculationService = MatchScoreCalculationService()
+        val matchScoreCalculationService = MatchScoreCalculationService
         val matchScoreModel = MatchScoreModel(Match(), "", "")
 
         matchScoreModel.statsPlayer1.point = 40
@@ -53,9 +52,8 @@ class MatchScoreCalculationTest {
 
     @Test
     fun testTiebreakCountPointsProperly() {
-        val matchScoreCalculationService = MatchScoreCalculationService()
+        val matchScoreCalculationService = MatchScoreCalculationService
         val matchScoreModel = MatchScoreModel(Match(), "", "")
-
 
         matchScoreModel.statsPlayer1.point = 40
         matchScoreModel.statsPlayer1.game = 5
@@ -67,6 +65,5 @@ class MatchScoreCalculationTest {
         assertEquals(0, matchScoreModel.statsPlayer2.game)
         assertEquals(0, matchScoreModel.statsPlayer1.set)
         assertEquals(0, matchScoreModel.statsPlayer2.set)
-
     }
 }
