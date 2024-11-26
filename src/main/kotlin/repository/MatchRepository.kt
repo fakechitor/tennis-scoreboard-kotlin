@@ -6,12 +6,16 @@ import org.hibernate.Session
 import org.hibernate.Transaction
 import util.HibernateUtil
 
-class MatchRepository : JpaRepository<Match> {
+object MatchRepository : JpaRepository<Match> {
     private val sessionFactory = HibernateUtil.sessionFactory
 
-    fun getMatchesResults(limit: Int, offset: Int): List<MatchWinnerDto> {
-        return execute { session ->
-            val hql = """
+    fun getMatchesResults(
+        limit: Int,
+        offset: Int,
+    ): List<MatchWinnerDto> =
+        execute { session ->
+            val hql =
+                """
                 SELECT 
                     p1.name AS player1_name,
                     p2.name AS player2_name,
@@ -28,15 +32,19 @@ class MatchRepository : JpaRepository<Match> {
                 MatchWinnerDto(
                     name1 = row[0] as String,
                     name2 = row[1] as String,
-                    winner = row[2] as String
+                    winner = row[2] as String,
                 )
             }
         }
-    }
 
-    fun getFilteredMatchesResults(name: String, limit: Int, offset: Int): List<MatchWinnerDto> {
-        return execute { session ->
-            val hql = """
+    fun getFilteredMatchesResults(
+        name: String,
+        limit: Int,
+        offset: Int,
+    ): List<MatchWinnerDto> =
+        execute { session ->
+            val hql =
+                """
                 SELECT 
                     p1.name AS player1_name,
                     p2.name AS player2_name,
@@ -55,23 +63,22 @@ class MatchRepository : JpaRepository<Match> {
                 MatchWinnerDto(
                     name1 = row[0] as String,
                     name2 = row[1] as String,
-                    winner = row[2] as String
+                    winner = row[2] as String,
                 )
             }
         }
-    }
 
-    fun getAll(): List<Match> {
-        return execute { session ->
+    fun getAll(): List<Match> =
+        execute { session ->
             val hql = "FROM Match"
             val query = session.createQuery(hql, Match::class.java)
             query.resultList
         }
-    }
 
-    fun getAllWithName(name: String): List<Match> {
-        return execute { session ->
-            val hql = """
+    fun getAllWithName(name: String): List<Match> =
+        execute { session ->
+            val hql =
+                """
             FROM Match m 
             JOIN Player p1 ON m.player1 = p1.id
             JOIN Player p2 ON m.player2 = p2.id
@@ -81,14 +88,12 @@ class MatchRepository : JpaRepository<Match> {
             query.setParameter("name", name)
             query.resultList
         }
-    }
 
-    override fun save(entity: Match): Match {
-        return executeInTransaction { session ->
+    override fun save(entity: Match): Match =
+        executeInTransaction { session ->
             session.persist(entity)
             entity
         }
-    }
 
     private fun <T> execute(action: (Session) -> T): T {
         var session: Session? = null
@@ -121,4 +126,3 @@ class MatchRepository : JpaRepository<Match> {
         }
     }
 }
-

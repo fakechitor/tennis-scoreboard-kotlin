@@ -7,8 +7,8 @@ import repository.MatchRepository
 
 private const val OBJECT_ON_PAGE = 5
 
-class FinishedMatchesPersistenceService {
-    private val matchRepository = MatchRepository()
+object FinishedMatchesPersistenceService {
+    private val matchRepository = MatchRepository
 
     fun getMatches(matchesReqDto: MatchesRequestDto): List<MatchWinnerDto> {
         val skipRowsCount = (matchesReqDto.page - 1) * OBJECT_ON_PAGE
@@ -22,14 +22,12 @@ class FinishedMatchesPersistenceService {
         }
     }
 
-    fun getMatchesAmount(name : String): Int {
-        if (name == ""){
+    fun getMatchesAmount(name: String): Int {
+        if (name == "") {
             return matchRepository.getAll().size
         }
         return matchRepository.getAllWithName(name).size
     }
 
-    fun save(match: Match): Match {
-        return matchRepository.save(match)
-    }
+    fun save(match: Match): Match = matchRepository.save(match)
 }

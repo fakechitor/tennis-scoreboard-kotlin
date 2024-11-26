@@ -5,25 +5,24 @@ import org.hibernate.Session
 import org.hibernate.Transaction
 import util.HibernateUtil
 
-class PlayerRepository : JpaRepository<Player> {
+object PlayerRepository : JpaRepository<Player> {
     private val sessionFactory = HibernateUtil.sessionFactory
 
-    override fun save(entity: Player): Player {
-        return executeInTransaction { session ->
+    override fun save(entity: Player): Player =
+        executeInTransaction { session ->
             session.persist(entity)
             entity
         }
-    }
 
-    fun getByName(name: String): Player? {
-        return execute { session ->
+    fun getByName(name: String): Player? =
+        execute { session ->
             val hql = "FROM Player p WHERE p.name = :name"
-            session.createQuery(hql, Player::class.java)
+            session
+                .createQuery(hql, Player::class.java)
                 .setParameter("name", name)
                 .uniqueResultOptional()
                 .orElse(null)
         }
-    }
 
     private fun <T> execute(action: (Session) -> T): T {
         var session: Session? = null

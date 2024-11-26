@@ -11,7 +11,10 @@ object OngoingMatchesService {
         return match
     }
 
-    fun putMatch(id: String, match: MatchScoreModel) {
+    fun putMatch(
+        id: String,
+        match: MatchScoreModel,
+    ) {
         map[id] = match
     }
 
