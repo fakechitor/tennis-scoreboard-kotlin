@@ -6,20 +6,9 @@ class Validation {
     companion object {
         fun String.validatePlayerName() {
             this.apply {
-                checkAllowedLength()
+                throwIfLonger(20)
                 checkNotForbidden()
                 containsOnlyLetters()
-            }
-        }
-
-        fun String.validateSearchName() {
-            this.checkAllowedLength()
-        }
-
-        fun String.validatePage() {
-            this.apply {
-                checkIsNumber()
-                checkIsPositive()
             }
         }
 
@@ -29,23 +18,24 @@ class Validation {
             }
         }
 
-        private fun String.checkIsNumber() {
+        fun String.toIntOrThrow(): Int {
             try {
-                this.toInt()
+                val number = this.toInt()
+                return number
             } catch (e: NumberFormatException) {
                 throw IllegalArgumentException("Номер страницы должен быть числом")
             }
         }
 
-        private fun String.checkIsPositive() {
-            if (this.toInt() <= 0) {
+        fun Int.checkIsPositive() {
+            if (this <= 0) {
                 throw IllegalArgumentException("Номер страницы должен быть больше 0")
             }
         }
 
-        private fun String.checkAllowedLength() {
-            if (this.length >= 20) {
-                throw IllegalArgumentException("Имя может содержать до 20 символов")
+        fun String.throwIfLonger(length: Int) {
+            if (this.length >= length) {
+                throw IllegalArgumentException("Имя может содержать до $length символов")
             }
         }
 
