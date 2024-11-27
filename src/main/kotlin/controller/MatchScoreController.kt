@@ -47,20 +47,22 @@ class MatchScoreController : HttpServlet() {
             val state = calculationService.getMatchState()
             addRequestAttributes(uuid, req, state)
             req.getRequestDispatcher(PATH_TO_MATCH_SCORE).forward(req, resp)
-        } catch (e: GameFinishedException) {
-            val matchScore = OngoingMatchesService.getMatch(uuid)
-            finishedMatches.save(matchScore.match)
-            addRequestAttributes(uuid, req, GameState.FINISHED)
-            OngoingMatchesService.deleteMatch(uuid)
-            req.getRequestDispatcher(PATH_TO_FINISHED).forward(req, resp)
-        } catch (e: IllegalArgumentException) {
-            req.setAttribute("showError", true)
-            req.setAttribute("errorMessage", e.localizedMessage)
-            req.getRequestDispatcher(PATH_TO_MATCH_SCORE).forward(req, resp)
-        } catch (e: RuntimeException) {
-            req.setAttribute("showError", true)
-            req.setAttribute("errorMessage", e.localizedMessage)
-            req.getRequestDispatcher(PATH_TO_MATCH_SCORE).forward(req, resp)
+        } catch (ex: Exception) {
+            when (ex) {
+                is GameFinishedException -> {
+                    val matchScore = OngoingMatchesService.getMatch(uuid)
+                    finishedMatches.save(matchScore.match)
+                    addRequestAttributes(uuid, req, GameState.FINISHED)
+                    OngoingMatchesService.deleteMatch(uuid)
+                    req.getRequestDispatcher(PATH_TO_FINISHED).forward(req, resp)
+                }
+
+                is IllegalArgumentException, is RuntimeException -> {
+                    req.setAttribute("showError", true)
+                    req.setAttribute("errorMessage", ex.localizedMessage)
+                    req.getRequestDispatcher(PATH_TO_MATCH_SCORE).forward(req, resp)
+                }
+            }
         }
     }
 
