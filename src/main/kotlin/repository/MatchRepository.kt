@@ -20,9 +20,11 @@ object MatchRepository : JpaRepository() {
                 JOIN Player p2 ON m.player2 = p2.id
                 JOIN Player p3 ON m.winner = p3.id
             """
-            val query = session.createQuery(hql, Array<Any>::class.java)
-            query.setMaxResults(limit)
-            query.setFirstResult(offset)
+            val query =
+                session.createQuery(hql, Array<Any>::class.java).apply {
+                    setMaxResults(limit)
+                    setFirstResult(offset)
+                }
             query.resultList.map { row ->
                 MatchWinnerDto(
                     name1 = row[0] as String,
@@ -50,10 +52,12 @@ object MatchRepository : JpaRepository() {
                 JOIN Player p3 ON m.winner = p3.id
                 WHERE p1.name = :name OR p2.name = :name
             """
-            val query = session.createQuery(hql, Array<Any>::class.java)
-            query.setParameter("name", name)
-            query.setMaxResults(limit)
-            query.setFirstResult(offset)
+            val query =
+                session.createQuery(hql, Array<Any>::class.java).apply {
+                    setParameter("name", name)
+                    maxResults = limit
+                    setFirstResult(offset)
+                }
             query.resultList.map { row ->
                 MatchWinnerDto(
                     name1 = row[0] as String,

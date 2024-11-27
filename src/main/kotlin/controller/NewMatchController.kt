@@ -14,17 +14,16 @@ import util.Validation.Companion.validateDifference
 import util.Validation.Companion.validatePlayerName
 import java.util.*
 
-private const val PATH_TO_NEW_MATCH = "/new-match.jsp"
-
 @WebServlet(name = "New match", value = ["/new-match"])
 class NewMatchController : HttpServlet() {
     private val playerService = PlayerService
+    private val pathToNewMatch = "/new-match.jsp"
 
     override fun doGet(
         req: HttpServletRequest,
         resp: HttpServletResponse,
     ) {
-        req.getRequestDispatcher(PATH_TO_NEW_MATCH).forward(req, resp)
+        req.getRequestDispatcher(pathToNewMatch).forward(req, resp)
     }
 
     override fun doPost(
@@ -32,32 +31,25 @@ class NewMatchController : HttpServlet() {
         resp: HttpServletResponse,
     ) {
         try {
-            val firstPlayerName = req.getParameter("firstPlayer").trim()
-            val secondPlayerName = req.getParameter("secondPlayer").trim()
-            validatePlayers(firstPlayerName, secondPlayerName)
-            val player1 = playerService.findOrCreatePlayer(firstPlayerName)
-            val player2 = playerService.findOrCreatePlayer(secondPlayerName)
+            val name1 = req.getParameter("firstPlayer").trim()
+            val name2 = req.getParameter("secondPlayer").trim()
+            name1.validateDifference(name2)
+            name1.validatePlayerName()
+            name2.validatePlayerName()
+            val player1 = playerService.findOrCreatePlayer(name1)
+            val player2 = playerService.findOrCreatePlayer(name2)
             val uuid = UUID.randomUUID().toString()
-            val match = Match(player1.id, player2.id)
-            OngoingMatchesService.putMatch(uuid, MatchScoreModel(match, player1.name, player2.name))
+            OngoingMatchesService.putMatch(
+                uuid,
+                MatchScoreModel(Match(player1.id, player2.id), player1.name, player2.name),
+            )
             resp.sendRedirect("${req.contextPath}/match-score?uuid=$uuid")
-        } catch (ex: Exception) {
-            when (ex) {
-                is IllegalArgumentException, is RuntimeException -> {
-                    req.setAttribute("showError", true)
-                    req.setAttribute("errorMessage", ex.localizedMessage)
-                    req.getRequestDispatcher(PATH_TO_NEW_MATCH).forward(req, resp)
-                }
+        } catch (ex: RuntimeException) {
+            req.apply {
+                setAttribute("error", ex.message)
+                setAttribute("errorMessage", ex.message)
+                getRequestDispatcher(pathToNewMatch).forward(req, resp)
             }
         }
-    }
-
-    private fun validatePlayers(
-        name1: String,
-        name2: String,
-    ) {
-        name1.validateDifference(name2)
-        name1.validatePlayerName()
-        name2.validatePlayerName()
     }
 }

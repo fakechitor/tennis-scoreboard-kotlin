@@ -145,7 +145,7 @@ object MatchScoreCalculationService {
         player: String,
     ) {
         val stats = getScoredPlayerStats(matchScore, player)
-        stats.game = stats.game + 1
+        stats.game += 1
         if (tiebreakFlag && stats.game == GAMES_REQUIRED_COUNT) {
             tiebreakFlag = false
             saveSetResults(matchScore)

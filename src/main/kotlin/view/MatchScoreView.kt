@@ -69,6 +69,4 @@ class MatchScoreView {
             GameState.UNDER_LOWER -> listOf("Сеты", "Геймы", "Преимущество")
             GameState.FINISHED -> listOf("Сеты", "Cет 1", "Cет 2", "Cет 3")
         }
-
-    fun getNamesList(match: MatchScoreModel): List<String> = listOf(match.namePlayer1, match.namePlayer2)
 }
