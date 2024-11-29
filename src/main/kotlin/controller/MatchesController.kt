@@ -36,10 +36,10 @@ class MatchesController : HttpServlet() {
                 setAttribute("filterName", name)
                 getRequestDispatcher(pathToMatches).forward(req, resp)
             }
-        } catch (e: RuntimeException) {
+        } catch (ex: RuntimeException) {
             req.apply {
                 setAttribute("showError", true)
-                setAttribute("errorMessage", e.localizedMessage)
+                setAttribute("errorMessage", ex.localizedMessage)
                 getRequestDispatcher(pathToMatches).forward(req, resp)
             }
         }

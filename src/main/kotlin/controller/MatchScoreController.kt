@@ -6,14 +6,14 @@ import jakarta.servlet.annotation.WebServlet
 import jakarta.servlet.http.HttpServlet
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import service.CalculationService
 import service.FinishedMatchesPersistenceService
-import service.MatchScoreCalculationService
 import service.OngoingMatchesService
 import view.MatchScoreView
 
 @WebServlet(urlPatterns = ["/match-score/*"])
 class MatchScoreController : HttpServlet() {
-    private val calculationService = MatchScoreCalculationService
+    private val calculationService = CalculationService
     private val finishedMatches = FinishedMatchesPersistenceService
     private val matchScoreView = MatchScoreView()
     private val pathToFinished = "/finished-match.jsp"
@@ -47,8 +47,8 @@ class MatchScoreController : HttpServlet() {
             req.getRequestDispatcher(pathToFinished).forward(req, resp)
         } catch (ex: RuntimeException) {
             req.apply {
-                setAttribute("error", ex.message)
-                setAttribute("errorMessage", ex.message)
+                setAttribute("showError", true)
+                setAttribute("errorMessage", ex.localizedMessage)
                 getRequestDispatcher(pathToMatchScore).forward(req, resp)
             }
         }
@@ -64,8 +64,8 @@ class MatchScoreController : HttpServlet() {
         val columnNames = matchScoreView.getColumnNames(gameState)
 
         setAttribute("uuid", matchUuid)
-        setAttribute("firstPlayer", matchScore.match.player1)
-        setAttribute("secondPlayer", matchScore.match.player2)
+        setAttribute("firstPlayer", matchScore.match.player1?.name)
+        setAttribute("secondPlayer", matchScore.match.player2?.name)
         setAttribute("scoreData", scoreData)
         setAttribute("columnNames", columnNames)
     }

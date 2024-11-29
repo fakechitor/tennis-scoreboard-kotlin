@@ -17,7 +17,7 @@ private const val GAMES_REQUIRED_COUNT = 7
 // required for matches where difference between game score > 2
 private const val GAMES_REQUIRED_COUNT_2 = 6
 
-object MatchScoreCalculationService {
+object CalculationService {
     private var tiebreakFlag: Boolean = false
     private var underLowerFlag: Boolean = false
 

@@ -1,26 +1,16 @@
+@file:Suppress("ktlint:standard:no-wildcard-imports")
+
 package model
 
 import jakarta.persistence.*
 
 @Entity
 @Table(name = "players")
-class Player {
+class Player(
+    @Column(name = "name")
+    var name: String = "",
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    var id: Int = 0;
-
-    @Column(name = "name")
-    var name: String = "";
-
-    constructor() {}
-    constructor(name: String) : this() {
-        this.name = name
-    }
-
-    override fun toString(): String {
-        return "Player(id=$id, name='$name')"
-    }
-
-
-}
+    val id: Int? = null,
+)

@@ -41,13 +41,13 @@ class NewMatchController : HttpServlet() {
             val uuid = UUID.randomUUID().toString()
             OngoingMatchesService.putMatch(
                 uuid,
-                MatchScoreModel(Match(player1.id, player2.id), player1.name, player2.name),
+                MatchScoreModel(Match(player1, player2), player1.name, player2.name),
             )
             resp.sendRedirect("${req.contextPath}/match-score?uuid=$uuid")
         } catch (ex: RuntimeException) {
             req.apply {
-                setAttribute("error", ex.message)
-                setAttribute("errorMessage", ex.message)
+                setAttribute("showError", true)
+                setAttribute("errorMessage", ex.localizedMessage)
                 getRequestDispatcher(pathToNewMatch).forward(req, resp)
             }
         }

@@ -11,14 +11,8 @@ object MatchRepository : JpaRepository() {
         execute { session ->
             val hql =
                 """
-                SELECT 
-                    p1.name AS player1_name,
-                    p2.name AS player2_name,
-                    p3.name AS winner_name
+                SELECT m.player1.name, m.player2.name, m.winner.name
                 FROM Match m
-                JOIN Player p1 ON m.player1 = p1.id
-                JOIN Player p2 ON m.player2 = p2.id
-                JOIN Player p3 ON m.winner = p3.id
             """
             val query =
                 session.createQuery(hql, Array<Any>::class.java).apply {
@@ -42,15 +36,9 @@ object MatchRepository : JpaRepository() {
         execute { session ->
             val hql =
                 """
-                SELECT 
-                    p1.name AS player1_name,
-                    p2.name AS player2_name,
-                    p3.name AS winner_name
+                SELECT m.player1.name, m.player2.name, m.winner
                 FROM Match m
-                JOIN Player p1 ON m.player1 = p1.id
-                JOIN Player p2 ON m.player2 = p2.id
-                JOIN Player p3 ON m.winner = p3.id
-                WHERE p1.name = :name OR p2.name = :name
+                WHERE m.player1.name = :name OR m.player2.name = :name
             """
             val query =
                 session.createQuery(hql, Array<Any>::class.java).apply {
@@ -78,10 +66,8 @@ object MatchRepository : JpaRepository() {
         execute { session ->
             val hql =
                 """
-            FROM Match m 
-            JOIN Player p1 ON m.player1 = p1.id
-            JOIN Player p2 ON m.player2 = p2.id
-            WHERE p1.name = :name OR p2.name = :name
+            FROM Match m
+                WHERE m.player1.name = :name OR m.player2.name = :name
         """
             val query = session.createQuery(hql, Match::class.java)
             query.setParameter("name", name)

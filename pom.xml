@@ -118,6 +118,9 @@
                 </executions>
                 <configuration>
                     <jvmTarget>21</jvmTarget>
+                    <compilerPlugins>
+                        <plugin>jpa</plugin>
+                    </compilerPlugins>
                 </configuration>
             </plugin>
         </plugins>
